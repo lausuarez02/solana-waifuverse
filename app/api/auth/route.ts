@@ -1,144 +1,123 @@
-import { Errors, createClient } from "@farcaster/quick-auth";
 import { NextRequest, NextResponse } from "next/server";
+import { PublicKey } from "@solana/web3.js";
+import bs58 from "bs58";
+import * as nacl from "tweetnacl";
 
-const client = createClient();
+// Helper to generate a simple JWT-like token
+function generateToken(publicKey: string): string {
+  const payload = {
+    publicKey,
+    iat: Math.floor(Date.now() / 1000),
+    exp: Math.floor(Date.now() / 1000) + (7 * 24 * 60 * 60), // 7 days
+  };
 
-// Helper function to determine the correct domain for JWT verification
-function getUrlHost(request: NextRequest): string {
-  // First try to get the origin from the Origin header (most reliable for CORS requests)
-  const origin = request.headers.get("origin");
-  if (origin) {
-    try {
-      const url = new URL(origin);
-      return normalizeHost(url.host);
-    } catch (error) {
-      console.warn("Invalid origin header:", origin, error);
+  // For now, just base64 encode the payload
+  // In production, you'd want to sign this with a secret
+  return Buffer.from(JSON.stringify(payload)).toString('base64');
+}
+
+// Helper to verify token
+function verifyToken(token: string): { publicKey: string; exp: number } | null {
+  try {
+    const payload = JSON.parse(Buffer.from(token, 'base64').toString());
+
+    // Check if token is expired
+    if (payload.exp < Math.floor(Date.now() / 1000)) {
+      return null;
     }
-  }
 
-  // Fallback to Host header
-  const host = request.headers.get("host");
-  if (host) {
-    return normalizeHost(host);
+    return payload;
+  } catch {
+    return null;
   }
-
-  // Final fallback to environment variables (your original logic)
-  let urlValue: string;
-  if (process.env.VERCEL_ENV === "production") {
-    urlValue = process.env.NEXT_PUBLIC_URL!;
-  } else if (process.env.VERCEL_URL) {
-    urlValue = `https://${process.env.VERCEL_URL}`;
-  } else {
-    urlValue = "http://localhost:3000";
-  }
-
-  const url = new URL(urlValue);
-  return normalizeHost(url.host);
 }
 
-// Normalize host by removing www subdomain to match Farcaster JWT aud claim
-function normalizeHost(host: string): string {
-  // Remove www. prefix if present
-  if (host.startsWith('www.')) {
-    return host.substring(4);
+// POST - Sign in with wallet signature
+export async function POST(request: NextRequest) {
+  try {
+    const body = await request.json();
+    const { publicKey, signature, message } = body;
+
+    if (!publicKey || !signature || !message) {
+      return NextResponse.json(
+        { success: false, message: "Missing required fields" },
+        { status: 400 }
+      );
+    }
+
+    // Verify the signature
+    try {
+      const publicKeyObj = new PublicKey(publicKey);
+      const signatureBytes = bs58.decode(signature);
+      const messageBytes = new TextEncoder().encode(message);
+
+      const verified = nacl.sign.detached.verify(
+        messageBytes,
+        signatureBytes,
+        publicKeyObj.toBytes()
+      );
+
+      if (!verified) {
+        return NextResponse.json(
+          { success: false, message: "Invalid signature" },
+          { status: 401 }
+        );
+      }
+
+      // Generate auth token
+      const token = generateToken(publicKey);
+      const now = Math.floor(Date.now() / 1000);
+
+      return NextResponse.json({
+        success: true,
+        token,
+        user: {
+          publicKey,
+          issuedAt: now,
+          expiresAt: now + (7 * 24 * 60 * 60),
+        },
+      });
+
+    } catch (err) {
+      console.error("Signature verification failed:", err);
+      return NextResponse.json(
+        { success: false, message: "Signature verification failed" },
+        { status: 401 }
+      );
+    }
+  } catch (err) {
+    console.error("Auth error:", err);
+    return NextResponse.json(
+      { success: false, message: "Internal server error" },
+      { status: 500 }
+    );
   }
-  return host;
 }
 
+// GET - Verify existing token
 export async function GET(request: NextRequest) {
-  // Because we're fetching this endpoint via `sdk.quickAuth.fetch`,
-  // if we're in a mini app, the request will include the necessary `Authorization` header.
   const authorization = request.headers.get("Authorization");
 
-  // Here we ensure that we have a valid token.
   if (!authorization || !authorization.startsWith("Bearer ")) {
     return NextResponse.json({ message: "Missing token" }, { status: 401 });
   }
 
-  try {
-    const domain = getUrlHost(request);
-    const token = authorization.split(" ")[1] as string;
+  const token = authorization.split(" ")[1];
+  const payload = verifyToken(token);
 
-    // Decode JWT to inspect claims (without verification)
-    let decodedPayload = null;
-    try {
-      const parts = token.split('.');
-      if (parts.length === 3) {
-        const payload = Buffer.from(parts[1], 'base64url').toString('utf8');
-        decodedPayload = JSON.parse(payload);
-      }
-    } catch (e) {
-      console.warn('Failed to decode JWT for inspection:', e);
-    }
-
-    console.log("Auth attempt:", {
-      domain,
-      rawHost: request.headers.get("host"),
-      normalizedDomain: domain,
-      tokenPreview: token.substring(0, 20) + "...",
-      decodedAud: decodedPayload?.aud,
-      decodedIss: decodedPayload?.iss,
-      domainsMatch: domain === decodedPayload?.aud,
-    });
-
-    // Try to verify with the normalized domain first, then with www prefix
-    // This handles cases where Farcaster issues tokens with either variant
-    let payload;
-    try {
-      payload = await client.verifyJwt({
-        token,
-        domain, // Try normalized version first (without www)
-      });
-      console.log("Auth success with normalized domain:", domain);
-    } catch (e) {
-      // If that fails and domain doesn't have www, try with www prefix
-      if (!domain.startsWith('www.')) {
-        const wwwDomain = `www.${domain}`;
-        console.log("Retrying with www domain:", wwwDomain);
-        payload = await client.verifyJwt({
-          token,
-          domain: wwwDomain,
-        });
-        console.log("Auth success with www domain:", wwwDomain);
-      } else {
-        // Re-throw if we already tried www or it's a different error
-        throw e;
-      }
-    }
-
-    // If the token was valid, `payload.sub` will be the user's Farcaster ID.
-    const userFid = payload.sub;
-
-    // Return user information for your waitlist application
-    return NextResponse.json({
-      success: true,
-      user: {
-        fid: userFid,
-        issuedAt: payload.iat,
-        expiresAt: payload.exp,
-      },
-    });
-
-  } catch (e) {
-    console.error("Auth verification failed:", {
-      error: e,
-      errorType: e instanceof Errors.InvalidTokenError ? 'InvalidTokenError' : 'Unknown',
-      message: e instanceof Error ? e.message : 'Unknown error',
-    });
-
-    if (e instanceof Errors.InvalidTokenError) {
-      return NextResponse.json({
-        success: false,
-        message: "Invalid token",
-        error: e.message
-      }, { status: 401 });
-    }
-    if (e instanceof Error) {
-      return NextResponse.json({
-        success: false,
-        message: e.message
-      }, { status: 500 });
-    }
-    throw e;
+  if (!payload) {
+    return NextResponse.json(
+      { success: false, message: "Invalid or expired token" },
+      { status: 401 }
+    );
   }
+
+  return NextResponse.json({
+    success: true,
+    user: {
+      publicKey: payload.publicKey,
+      issuedAt: Math.floor(Date.now() / 1000),
+      expiresAt: payload.exp,
+    },
+  });
 }

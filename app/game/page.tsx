@@ -1,19 +1,22 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { sdk } from "@farcaster/miniapp-sdk";
+import { useWallet } from "@solana/wallet-adapter-react";
+import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
 import { Button } from "@/components/ui/8bit/button";
 import { IntroVideo } from "@/components/IntroVideo";
 import styles from "./page.module.css";
+import bs58 from "bs58";
 
 interface UserData {
-  fid: number;
+  publicKey: string;
   issuedAt: number;
   expiresAt: number;
 }
 
 export default function GameDashboard() {
   const router = useRouter();
+  const { publicKey, signMessage, connected } = useWallet();
   const [token, setToken] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -21,7 +24,7 @@ export default function GameDashboard() {
   const [showIntro, setShowIntro] = useState(true);
   const [introWatched, setIntroWatched] = useState(false);
 
-  // Check for existing token on mount and tell SDK app is ready
+  // Check for existing token on mount
   useEffect(() => {
     async function initializeApp() {
       // Check if intro was already watched this session
@@ -31,19 +34,14 @@ export default function GameDashboard() {
         setIntroWatched(true);
       }
 
-      // Tell Farcaster SDK that the app is ready to display
-      try {
-        await sdk.actions.ready();
-      } catch (error) {
-        console.error('Failed to signal ready:', error);
-      }
-
       // Check for saved authentication token
-      const savedToken = localStorage.getItem('fc_auth_token');
-      if (savedToken) {
+      const savedToken = localStorage.getItem('sol_auth_token');
+      const savedPublicKey = localStorage.getItem('sol_public_key');
+
+      if (savedToken && savedPublicKey && publicKey?.toString() === savedPublicKey) {
         setToken(savedToken);
         try {
-          const response = await sdk.quickAuth.fetch(`${window.location.origin}/api/auth`, {
+          const response = await fetch(`${window.location.origin}/api/auth`, {
             headers: { "Authorization": `Bearer ${savedToken}` }
           });
 
@@ -62,41 +60,44 @@ export default function GameDashboard() {
       }
     }
     initializeApp();
-  }, []);
+  }, [publicKey]);
 
   async function signIn() {
+    if (!publicKey || !signMessage) {
+      setError('Please connect your wallet first');
+      return;
+    }
+
     setIsLoading(true);
     setError(null);
     try {
-      // Get the domain for JWT verification - must match backend
-      const domain = window.location.host;
+      // Create a message to sign
+      const message = `Sign this message to authenticate with Waifuverse.\n\nTimestamp: ${Date.now()}`;
+      const encodedMessage = new TextEncoder().encode(message);
 
-      console.log('Getting token for domain:', domain);
+      // Request signature from wallet
+      const signature = await signMessage(encodedMessage);
 
-      const { token: authToken } = await sdk.quickAuth.getToken();
-
-      console.log('Received token:', {
-        tokenPreview: authToken.substring(0, 30) + '...',
-        currentDomain: domain,
-        origin: window.location.origin
-      });
-
-      setToken(authToken);
-      localStorage.setItem('fc_auth_token', authToken);
-
-      // Verify token and fetch user data
-      console.log('Verifying token with backend at:', `${window.location.origin}/api/auth`);
-
-      const response = await sdk.quickAuth.fetch(`${window.location.origin}/api/auth`, {
-        headers: { "Authorization": `Bearer ${authToken}` }
+      // Send signature and public key to backend for verification
+      const response = await fetch(`${window.location.origin}/api/auth`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          publicKey: publicKey.toString(),
+          signature: bs58.encode(signature),
+          message,
+        })
       });
 
       const data = await response.json();
 
-      console.log('Backend response:', data);
-
-      if (data.success && data.user) {
+      if (data.success && data.token) {
+        setToken(data.token);
         setUserData(data.user);
+        localStorage.setItem('sol_auth_token', data.token);
+        localStorage.setItem('sol_public_key', publicKey.toString());
       } else {
         throw new Error(data.message || 'Authentication failed');
       }
@@ -112,7 +113,8 @@ export default function GameDashboard() {
   function signOut() {
     setToken(null);
     setUserData(null);
-    localStorage.removeItem('fc_auth_token');
+    localStorage.removeItem('sol_auth_token');
+    localStorage.removeItem('sol_public_key');
   }
 
   function handleIntroComplete() {
@@ -132,7 +134,7 @@ export default function GameDashboard() {
       <div className={styles.container}>
         <div className={styles.content}>
           <h1 className={styles.title}>WAIFUVERSE</h1>
-          <p className={styles.subtitle}>Sign in to start your adventure</p>
+          <p className={styles.subtitle}>Connect your wallet to start your adventure</p>
 
           {error && (
             <div className={styles.error}>
@@ -140,14 +142,20 @@ export default function GameDashboard() {
             </div>
           )}
 
-          <Button
-            onClick={signIn}
-            size="lg"
-            disabled={isLoading}
-            className={styles.signInButton}
-          >
-            {isLoading ? 'SIGNING IN...' : 'SIGN IN'}
-          </Button>
+          <div style={{ marginBottom: '1rem' }}>
+            <WalletMultiButton />
+          </div>
+
+          {connected && publicKey && (
+            <Button
+              onClick={signIn}
+              size="lg"
+              disabled={isLoading}
+              className={styles.signInButton}
+            >
+              {isLoading ? 'SIGNING IN...' : 'SIGN IN'}
+            </Button>
+          )}
         </div>
       </div>
     );
@@ -155,13 +163,11 @@ export default function GameDashboard() {
 
   return (
     <div className={styles.container}>
-      {/* WalletStatus temporarily disabled - enable when wallet is connected */}
-      {/* <WalletStatus /> */}
       <div className={styles.content}>
         <div className={styles.userInfo}>
           <h1 className={styles.title}>Game Dashboard</h1>
           {userData && (
-            <p className={styles.fid}>FID: {userData.fid}</p>
+            <p className={styles.fid}>Wallet: {userData.publicKey.substring(0, 4)}...{userData.publicKey.substring(userData.publicKey.length - 4)}</p>
           )}
         </div>
 

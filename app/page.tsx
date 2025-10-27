@@ -1,7 +1,5 @@
 "use client";
-import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { sdk } from "@farcaster/miniapp-sdk";
 import { Button } from "@/components/ui/8bit/button";
 
 import styles from "./page.module.css";
@@ -9,18 +7,6 @@ import styles from "./page.module.css";
 
 export default function Home() {
   const router = useRouter();
-
-  // Tell Farcaster SDK that the app is ready to display
-  useEffect(() => {
-    async function initializeApp() {
-      try {
-        await sdk.actions.ready();
-      } catch (error) {
-        console.error('Failed to signal ready:', error);
-      }
-    }
-    initializeApp();
-  }, []);
 
   // Temporarily disable MiniKit for testing
   // const { isFrameReady, setFrameReady, context } = useMiniKit();

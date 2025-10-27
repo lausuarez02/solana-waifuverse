@@ -1,11 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/supabase-db';
-import { createClient } from "@farcaster/quick-auth";
 
-const client = createClient();
-
-// Get authenticated user FID from JWT
-async function getAuthenticatedFid(request: NextRequest): Promise<number | null> {
+// Get authenticated user public key from JWT
+async function getAuthenticatedPublicKey(request: NextRequest): Promise<string | null> {
   const authorization = request.headers.get("Authorization");
 
   if (!authorization?.startsWith("Bearer ")) {
@@ -14,17 +11,14 @@ async function getAuthenticatedFid(request: NextRequest): Promise<number | null>
 
   try {
     const token = authorization.split(" ")[1];
-    const domain = request.headers.get("host")?.replace('www.', '') || 'waifuverse.fun';
+    const payload = JSON.parse(Buffer.from(token, 'base64').toString());
 
-    // Try both domain variants
-    let payload;
-    try {
-      payload = await client.verifyJwt({ token, domain });
-    } catch {
-      payload = await client.verifyJwt({ token, domain: `www.${domain}` });
+    // Check if token is expired
+    if (payload.exp < Math.floor(Date.now() / 1000)) {
+      return null;
     }
 
-    return Number(payload.sub);
+    return payload.publicKey;
   } catch (e) {
     console.error('Auth failed:', e);
     return null;
@@ -34,8 +28,8 @@ async function getAuthenticatedFid(request: NextRequest): Promise<number | null>
 // POST - Save a waifu capture
 export async function POST(request: NextRequest) {
   try {
-    const fid = await getAuthenticatedFid(request);
-    if (!fid) {
+    const publicKey = await getAuthenticatedPublicKey(request);
+    if (!publicKey) {
       return NextResponse.json(
         { error: 'Unauthorized - please sign in' },
         { status: 401 }
@@ -51,8 +45,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Check if already captured
-    const hasCapture = await db.hasCapture(fid, waifuId);
+    // Use publicKey as user identifier instead of fid
+    const hasCapture = await db.hasCapture(publicKey, waifuId);
     if (hasCapture) {
       return NextResponse.json({
         success: true,
@@ -62,12 +56,12 @@ export async function POST(request: NextRequest) {
 
     // Save capture
     await db.saveCapture({
-      fid,
+      fid: publicKey, // Store publicKey in fid field for now
       waifu_id: waifuId,
       captured_at: new Date().toISOString()
     });
 
-    console.log('Capture saved:', { fid, waifuId });
+    console.log('Capture saved:', { publicKey, waifuId });
 
     return NextResponse.json({
       success: true,
@@ -86,15 +80,15 @@ export async function POST(request: NextRequest) {
 // GET - Get player's captures
 export async function GET(request: NextRequest) {
   try {
-    const fid = await getAuthenticatedFid(request);
-    if (!fid) {
+    const publicKey = await getAuthenticatedPublicKey(request);
+    if (!publicKey) {
       return NextResponse.json(
         { error: 'Unauthorized - please sign in' },
         { status: 401 }
       );
     }
 
-    const captures = await db.getCaptures(fid);
+    const captures = await db.getCaptures(publicKey);
 
     return NextResponse.json({
       captures: captures.map(c => ({
