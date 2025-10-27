@@ -1,0 +1,55 @@
+.container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.9);
+  border: 3px solid #f15bb5;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 0 20px rgba(241, 91, 181, 0.5);
+  font-family: var(--font-press-start), monospace;
+}
+
+.address {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.label {
+  font-size: 0.6rem;
+  color: #f15bb5;
+  text-shadow: 1px 1px 0px #000;
+}
+
+.value {
+  font-size: 0.6rem;
+  color: #00ff00;
+  text-shadow: 1px 1px 0px #000;
+}
+
+.capabilities {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.badge {
+  font-size: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(0, 255, 0, 0.2);
+  border: 2px solid #00ff00;
+  color: #00ff00;
+  text-shadow: 1px 1px 0px #000;
+  cursor: help;
+}
+
+.badgeNormal {
+  font-size: 0.5rem;
+  padding: 0.25rem 0.5rem;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid #666;
+  color: #999;
+  text-shadow: 1px 1px 0px #000;
+}

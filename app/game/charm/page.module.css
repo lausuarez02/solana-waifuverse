@@ -1,0 +1,331 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #1a1a2e 0%, #0f0f1e 100%);
+  color: white;
+  position: relative;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-bottom: 4px solid #f15bb5;
+}
+
+.title {
+  font-family: var(--font-press-start), monospace;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  color: #f15bb5;
+  text-shadow: 2px 2px 0px #000;
+  image-rendering: pixelated;
+}
+
+.startScreen {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.startContent {
+  text-align: center;
+  max-width: 400px;
+}
+
+.startTitle {
+  font-family: var(--font-press-start), monospace;
+  font-size: 2rem;
+  color: #f15bb5;
+  margin-bottom: 1rem;
+  text-shadow: 4px 4px 0px #000;
+}
+
+.startSubtitle {
+  font-family: var(--font-press-start), monospace;
+  font-size: 0.8rem;
+  color: #fee2f8;
+  line-height: 1.8;
+}
+
+.error {
+  font-family: var(--font-press-start), monospace;
+  font-size: 0.7rem;
+  color: #ff6b6b;
+  margin-top: 1rem;
+}
+
+.arContainer {
+  flex: 1;
+  position: relative;
+  overflow: hidden;
+}
+
+.virtualWorld {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.skyLayer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60%;
+  background: linear-gradient(180deg, #1a1a4e 0%, #2a2a6e 100%);
+}
+
+.groundLayer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 40%;
+  background: linear-gradient(180deg, #2d5016 0%, #1a3010 100%);
+  border-top: 4px solid #f15bb5;
+}
+
+.arOverlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.arWaifu {
+  position: absolute;
+  pointer-events: all;
+  text-align: center;
+  cursor: pointer;
+  animation: float 3s ease-in-out infinite;
+}
+
+.arWaifu.rare {
+  filter: drop-shadow(0 0 20px #00d4ff);
+}
+
+.arWaifu.epic {
+  filter: drop-shadow(0 0 20px #ffd700);
+}
+
+.waifuEmoji {
+  font-size: 4rem;
+  margin-bottom: 0.5rem;
+}
+
+.waifuName {
+  font-family: var(--font-press-start), monospace;
+  font-size: 0.8rem;
+  color: white;
+  background: rgba(241, 91, 181, 0.9);
+  padding: 0.5rem;
+  margin-bottom: 0.25rem;
+  text-shadow: 2px 2px 0px #000;
+}
+
+.waifuDistance {
+  font-family: var(--font-press-start), monospace;
+  font-size: 0.6rem;
+  color: white;
+  background: rgba(0, 0, 0, 0.7);
+  padding: 0.25rem 0.5rem;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translate(-50%, -50%) translateY(0);
+  }
+  50% {
+    transform: translate(-50%, -50%) translateY(-20px);
+  }
+}
+
+.crosshair {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+}
+
+.crosshairH {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: #f15bb5;
+  box-shadow: 0 0 10px #f15bb5;
+}
+
+.crosshairV {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 2px;
+  height: 100%;
+  background: #f15bb5;
+  box-shadow: 0 0 10px #f15bb5;
+}
+
+.compass {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 60px;
+  height: 60px;
+  background: rgba(0, 0, 0, 0.5);
+  border: 3px solid #f15bb5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.compassArrow {
+  font-size: 2rem;
+  color: #f15bb5;
+  transition: transform 0.1s ease;
+}
+
+.mapContainer {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
+
+.map {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  height: 600px;
+  background:
+    linear-gradient(45deg, #2a2a4e 25%, transparent 25%),
+    linear-gradient(-45deg, #2a2a4e 25%, transparent 25%),
+    linear-gradient(45deg, transparent 75%, #2a2a4e 75%),
+    linear-gradient(-45deg, transparent 75%, #2a2a4e 75%);
+  background-size: 40px 40px;
+  background-position: 0 0, 0 20px, 20px -20px, -20px 0px;
+  background-color: #1e1e3e;
+  border: 6px solid #f15bb5;
+  box-shadow:
+    0 0 20px rgba(241, 91, 181, 0.3),
+    inset 0 0 40px rgba(0, 0, 0, 0.5);
+  image-rendering: pixelated;
+}
+
+.waifuMarker {
+  position: absolute;
+  width: 48px;
+  height: 48px;
+  transform: translate(-50%, -50%);
+  background: rgba(241, 91, 181, 0.2);
+  border: 3px solid #f15bb5;
+  border-radius: 0;
+  font-size: 1.5rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  animation: pulse 2s infinite;
+}
+
+.waifuMarker:hover:not(:disabled) {
+  transform: translate(-50%, -50%) scale(1.2);
+  box-shadow: 0 0 20px rgba(241, 91, 181, 0.8);
+}
+
+.waifuMarker.charmed {
+  background: rgba(100, 100, 100, 0.3);
+  border-color: #666;
+  cursor: not-allowed;
+  animation: none;
+  opacity: 0.5;
+}
+
+.waifuMarker.rare {
+  border-color: #00d4ff;
+  background: rgba(0, 212, 255, 0.2);
+}
+
+.waifuMarker.epic {
+  border-color: #ffd700;
+  background: rgba(255, 215, 0, 0.2);
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+.modalContent {
+  background: #1e1e3e;
+  border: 6px solid #f15bb5;
+  padding: 2rem;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0 0 40px rgba(241, 91, 181, 0.5);
+}
+
+.waifuName {
+  font-family: var(--font-press-start), monospace;
+  font-size: 1.5rem;
+  color: #f15bb5;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 0px #000;
+}
+
+.waifuRarity {
+  font-family: var(--font-press-start), monospace;
+  font-size: 0.8rem;
+  color: #fee2f8;
+  margin-bottom: 2rem;
+}
+
+.modalActions {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.stats {
+  padding: 1rem 2rem;
+  background: rgba(0, 0, 0, 0.5);
+  border-top: 4px solid #f15bb5;
+}
+
+.statText {
+  font-family: var(--font-press-start), monospace;
+  font-size: 0.8rem;
+  color: #fee2f8;
+  text-align: center;
+}

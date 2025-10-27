@@ -1,0 +1,104 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: url('/menu_photo_mobile.jpeg') center/cover no-repeat;
+  color: white;
+  position: relative;
+  image-rendering: pixelated;
+}
+
+@media (min-width: 768px) {
+  .container {
+    background: url('/menu_photo.jpg') center/cover no-repeat;
+  }
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  padding: 2rem;
+}
+
+.title {
+  font-family: var(--font-press-start), monospace;
+  font-size: clamp(1.5rem, 5vw, 3rem);
+  font-weight: 400;
+  letter-spacing: 0.1em;
+  margin-bottom: 3rem;
+  color: #f15bb5;
+  text-shadow:
+    4px 4px 0px #000,
+    0 0 20px rgba(241, 91, 181, 0.5);
+  image-rendering: pixelated;
+  line-height: 1.5;
+  text-align: center;
+}
+
+.buttonGrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+  max-width: 400px;
+  width: 100%;
+}
+
+@media (min-width: 768px) {
+  .buttonGrid {
+    grid-template-columns: 1fr 1fr;
+    max-width: 600px;
+  }
+}
+
+.dashboardButton {
+  min-height: 60px;
+  font-size: 1rem;
+}
+
+.subtitle {
+  font-family: var(--font-press-start), monospace;
+  font-size: 0.8rem;
+  color: #fee2f8;
+  text-align: center;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 0px #000;
+}
+
+.signInButton {
+  min-width: 300px;
+  min-height: 60px;
+  font-size: 0.9rem;
+}
+
+.error {
+  background: rgba(255, 0, 0, 0.2);
+  border: 3px solid #ff0000;
+  padding: 1rem;
+  margin-bottom: 1rem;
+  font-family: var(--font-press-start), monospace;
+  font-size: 0.7rem;
+  color: #ff6b6b;
+  text-align: center;
+  text-shadow: 1px 1px 0px #000;
+}
+
+.userInfo {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.fid {
+  font-family: var(--font-press-start), monospace;
+  font-size: 0.7rem;
+  color: #00ff00;
+  text-shadow: 2px 2px 0px #000;
+  margin-top: 0.5rem;
+}
+
+.bottomActions {
+  margin-top: 2rem;
+  text-align: center;
+}
