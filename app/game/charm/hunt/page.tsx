@@ -26,6 +26,8 @@ export default function HuntPage() {
   const [spawn, setSpawn] = useState<Spawn | null>(null);
   const [capturing, setCapturing] = useState(false);
   const [permissionRequested, setPermissionRequested] = useState(false);
+  const [cameraReady, setCameraReady] = useState(false);
+  const [cameraError, setCameraError] = useState<string | null>(null);
 
   const ar = useCompassAR(spawn, 65); // 65° FOV
   const canSee = ar.visible && ar.inRadius;
@@ -48,8 +50,13 @@ export default function HuntPage() {
 
   // Start camera
   useEffect(() => {
+    let mounted = true;
+
     async function startCamera() {
       try {
+        setCameraError(null);
+        console.log('Requesting camera access...');
+
         // Try rear camera first (mobile)
         let stream;
         try {
@@ -71,25 +78,41 @@ export default function HuntPage() {
           });
         }
 
+        if (!mounted) {
+          stream.getTracks().forEach(track => track.stop());
+          return;
+        }
+
         if (videoRef.current) {
           const video = videoRef.current;
           video.srcObject = stream;
           video.onloadedmetadata = () => {
             video.play().then(() => {
               console.log('Camera started successfully');
+              if (mounted) {
+                setCameraReady(true);
+              }
+            }).catch(err => {
+              console.error('Video play error:', err);
+              if (mounted) {
+                setCameraError('Failed to start video playback');
+              }
             });
           };
         }
       } catch (err) {
         console.error('Camera error:', err);
-        alert('Camera permission denied. Please allow camera access.');
+        if (mounted) {
+          setCameraError('Camera permission denied. Please allow camera access and reload.');
+        }
       }
     }
 
-    const video = videoRef.current;
     startCamera();
 
     return () => {
+      mounted = false;
+      const video = videoRef.current;
       if (video?.srcObject) {
         const stream = video.srcObject as MediaStream;
         stream.getTracks().forEach(track => track.stop());
@@ -114,7 +137,7 @@ export default function HuntPage() {
 
       // Also save to backend
       try {
-        const token = localStorage.getItem('fc_auth_token');
+        const token = localStorage.getItem('sol_auth_token');
         if (token) {
           await fetch('/api/capture', {
             method: 'POST',
@@ -140,7 +163,39 @@ export default function HuntPage() {
   if (!spawn) {
     return (
       <div className={styles.container}>
-        <div className={styles.loading}>Loading...</div>
+        <div className={styles.loading}>Loading spawn data...</div>
+      </div>
+    );
+  }
+
+  if (cameraError) {
+    return (
+      <div className={styles.container}>
+        <div className={styles.loading}>
+          <p style={{ color: '#ff4444', marginBottom: '1rem' }}>{cameraError}</p>
+          <Button onClick={() => window.location.reload()}>Reload Page</Button>
+        </div>
+      </div>
+    );
+  }
+
+  if (!cameraReady) {
+    return (
+      <div className={styles.container}>
+        <video
+          ref={videoRef}
+          autoPlay
+          playsInline
+          muted
+          className={styles.video}
+          style={{ opacity: 0 }}
+        />
+        <div className={styles.loading}>
+          Starting camera...
+          <p style={{ fontSize: '0.9rem', marginTop: '0.5rem' }}>
+            Please grant camera permissions
+          </p>
+        </div>
       </div>
     );
   }
