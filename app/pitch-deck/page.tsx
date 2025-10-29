@@ -571,31 +571,85 @@ export default function PitchDeck() {
             <div className={styles.timelineItem}>
               <div className={styles.timelineDot}></div>
               <div className={styles.timelineContent}>
-                <h3 className={styles.timelineTitle}>v0 Demo</h3>
+                <h3 className={styles.timelineTitle}>2025 Q4</h3>
                 <div className={styles.timelineFeatures}>
                   <div className={styles.featureItem}>
-                    <span className={styles.checkmark}>✓</span>
-                    <span>Geolocalized capture system</span>
+                    <span className={styles.checkmark}>◉</span>
+                    <span>Devconnect event</span>
                   </div>
                   <div className={styles.featureItem}>
-                    <span className={styles.checkmark}>✓</span>
-                    <span>Minimal interaction mechanics</span>
+                    <span className={styles.checkmark}>◉</span>
+                    <span>ARCore content placement</span>
                   </div>
                   <div className={styles.featureItem}>
-                    <span className={styles.checkmark}>✓</span>
-                    <span>Custodial NFT minting</span>
+                    <span className={styles.checkmark}>◉</span>
+                    <span>Added more location-based waifus</span>
                   </div>
                 </div>
               </div>
             </div>
 
             <div className={styles.timelineItem}>
-              <div className={styles.timelineDot} style={{ opacity: 0.5 }}></div>
-              <div className={styles.timelineContent} style={{ opacity: 0.7 }}>
-                <h3 className={styles.timelineTitle}>Future Iterations</h3>
-                <p className={styles.timelineDescription}>
-                  Additional features and improvements coming soon
-                </p>
+              <div className={styles.timelineDot}></div>
+              <div className={styles.timelineContent}>
+                <h3 className={styles.timelineTitle}>2026 Q1</h3>
+                <div className={styles.seekerImageContainer}>
+                  <Image
+                    src="/Seeker.png"
+                    alt="Seeker"
+                    width={120}
+                    height={120}
+                    className={styles.seekerImage}
+                  />
+                </div>
+                <div className={styles.timelineFeatures}>
+                  <div className={styles.featureItem}>
+                    <span className={styles.checkmark}>◉</span>
+                    <span>Launch on Seeker mobile store</span>
+                  </div>
+                  <div className={styles.featureItem}>
+                    <span className={styles.checkmark}>◉</span>
+                    <span>Custom appearance and clothes</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.timelineItem}>
+              <div className={styles.timelineDot}></div>
+              <div className={styles.timelineContent}>
+                <h3 className={styles.timelineTitle}>2026 Q2</h3>
+                <div className={styles.timelineFeatures}>
+                  <div className={styles.featureItem}>
+                    <span className={styles.checkmark}>◉</span>
+                    <span>Improve AI companion</span>
+                  </div>
+                  <div className={styles.featureItem}>
+                    <span className={styles.checkmark}>◉</span>
+                    <span>Improve interactions</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <div className={styles.timelineItem}>
+              <div className={styles.timelineDot}></div>
+              <div className={styles.timelineContent}>
+                <h3 className={styles.timelineTitle}>2026 Q3 onwards</h3>
+                <div className={styles.timelineFeatures}>
+                  <div className={styles.featureItem}>
+                    <span className={styles.checkmark}>◉</span>
+                    <span>Waifu evolution</span>
+                  </div>
+                  <div className={styles.featureItem}>
+                    <span className={styles.checkmark}>◉</span>
+                    <span>Implemented coin rewards system</span>
+                  </div>
+                  <div className={styles.featureItem}>
+                    <span className={styles.checkmark}>◉</span>
+                    <span>Waifus minigames</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
