@@ -15,7 +15,6 @@ A Pokemon GO-style NFT collection game built as a Farcaster Mini App. Capture wa
 
 ## Tech Stack
 
-
 - **Frontend:** Next.js 15, React, TypeScript
 - **Styling:** CSS Modules, 8-bit UI components
 - **Blockchain:** Base (L2), ethers.js, wagmi, OnchainKit
