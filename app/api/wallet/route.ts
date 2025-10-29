@@ -1,42 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/supabase-db';
-import { createClient } from "@farcaster/quick-auth";
+import { getAuthenticatedUser } from '@/lib/auth';
 import { PublicKey } from '@solana/web3.js';
-
-const client = createClient();
-
-// Get authenticated user FID from JWT
-async function getAuthenticatedFid(request: NextRequest): Promise<number | null> {
-  const authorization = request.headers.get("Authorization");
-
-  if (!authorization?.startsWith("Bearer ")) {
-    return null;
-  }
-
-  try {
-    const token = authorization.split(" ")[1];
-    const domain = request.headers.get("host")?.replace('www.', '') || 'waifuverse.fun';
-
-    // Try both domain variants
-    let payload;
-    try {
-      payload = await client.verifyJwt({ token, domain });
-    } catch {
-      payload = await client.verifyJwt({ token, domain: `www.${domain}` });
-    }
-
-    return Number(payload.sub);
-  } catch (e) {
-    console.error('Auth failed:', e);
-    return null;
-  }
-}
 
 // POST - Save player's wallet address
 export async function POST(request: NextRequest) {
   try {
-    const fid = await getAuthenticatedFid(request);
-    if (!fid) {
+    const user = await getAuthenticatedUser(request);
+    if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized - please sign in' },
         { status: 401 }
@@ -62,18 +33,26 @@ export async function POST(request: NextRequest) {
       );
     }
 
+    // Verify the wallet address matches the authenticated wallet
+    if (walletAddress !== user.wallet) {
+      return NextResponse.json(
+        { error: 'Wallet address does not match authenticated wallet' },
+        { status: 403 }
+      );
+    }
+
     // Save wallet (no toLowerCase for Solana addresses - they're case-sensitive base58)
     await db.savePlayerWallet({
-      fid,
+      fid: user.userId,
       wallet_address: walletAddress,
       created_at: new Date().toISOString()
     });
 
-    console.log('Wallet saved:', { fid, walletAddress });
+    console.log('Wallet saved:', { userId: user.userId, walletAddress });
 
     return NextResponse.json({
       success: true,
-      fid,
+      userId: user.userId,
       walletAddress
     });
 
@@ -89,15 +68,15 @@ export async function POST(request: NextRequest) {
 // GET - Get player's wallet address
 export async function GET(request: NextRequest) {
   try {
-    const fid = await getAuthenticatedFid(request);
-    if (!fid) {
+    const user = await getAuthenticatedUser(request);
+    if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized - please sign in' },
         { status: 401 }
       );
     }
 
-    const wallet = await db.getPlayerWallet(fid);
+    const wallet = await db.getPlayerWallet(user.userId);
 
     if (!wallet) {
       return NextResponse.json(

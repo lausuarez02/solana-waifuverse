@@ -1,41 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/supabase-db';
-import { createClient } from "@farcaster/quick-auth";
-
-const client = createClient();
-
-// Get authenticated user FID from JWT
-async function getAuthenticatedFid(request: NextRequest): Promise<number | null> {
-  const authorization = request.headers.get("Authorization");
-
-  if (!authorization?.startsWith("Bearer ")) {
-    return null;
-  }
-
-  try {
-    const token = authorization.split(" ")[1];
-    const domain = request.headers.get("host")?.replace('www.', '') || 'waifuverse.fun';
-
-    // Try both domain variants
-    let payload;
-    try {
-      payload = await client.verifyJwt({ token, domain });
-    } catch {
-      payload = await client.verifyJwt({ token, domain: `www.${domain}` });
-    }
-
-    return Number(payload.sub);
-  } catch (e) {
-    console.error('Auth failed:', e);
-    return null;
-  }
-}
+import { getAuthenticatedUser } from '@/lib/auth';
 
 // POST - Save a successful mint
 export async function POST(request: NextRequest) {
   try {
-    const fid = await getAuthenticatedFid(request);
-    if (!fid) {
+    const user = await getAuthenticatedUser(request);
+    if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized - please sign in' },
         { status: 401 }
@@ -51,11 +22,11 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    console.log('Saving mint:', { fid, waifuId, txHash, tokenId });
+    console.log('Saving mint:', { userId: user.userId, waifuId, txHash, tokenId });
 
     // Save mint to database
     await db.saveMint({
-      fid,
+      fid: user.userId,
       waifu_id: waifuId,
       token_id: tokenId,
       tx_hash: txHash,

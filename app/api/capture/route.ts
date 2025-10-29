@@ -1,35 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { db } from '@/lib/supabase-db';
-
-// Get authenticated user public key from JWT
-async function getAuthenticatedPublicKey(request: NextRequest): Promise<string | null> {
-  const authorization = request.headers.get("Authorization");
-
-  if (!authorization?.startsWith("Bearer ")) {
-    return null;
-  }
-
-  try {
-    const token = authorization.split(" ")[1];
-    const payload = JSON.parse(Buffer.from(token, 'base64').toString());
-
-    // Check if token is expired
-    if (payload.exp < Math.floor(Date.now() / 1000)) {
-      return null;
-    }
-
-    return payload.publicKey;
-  } catch (e) {
-    console.error('Auth failed:', e);
-    return null;
-  }
-}
+import { getAuthenticatedUser } from '@/lib/auth';
 
 // POST - Save a waifu capture
 export async function POST(request: NextRequest) {
   try {
-    const publicKey = await getAuthenticatedPublicKey(request);
-    if (!publicKey) {
+    const user = await getAuthenticatedUser(request);
+    if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized - please sign in' },
         { status: 401 }
@@ -45,8 +22,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Use publicKey as user identifier instead of fid
-    const hasCapture = await db.hasCapture(publicKey, waifuId);
+    // Check if already captured
+    const hasCapture = await db.hasCapture(user.userId, waifuId);
     if (hasCapture) {
       return NextResponse.json({
         success: true,
@@ -56,12 +33,12 @@ export async function POST(request: NextRequest) {
 
     // Save capture
     await db.saveCapture({
-      fid: publicKey, // Store publicKey in fid field for now
+      fid: user.userId,
       waifu_id: waifuId,
       captured_at: new Date().toISOString()
     });
 
-    console.log('Capture saved:', { publicKey, waifuId });
+    console.log('Capture saved:', { userId: user.userId, wallet: user.wallet, waifuId });
 
     return NextResponse.json({
       success: true,
@@ -80,15 +57,15 @@ export async function POST(request: NextRequest) {
 // GET - Get player's captures
 export async function GET(request: NextRequest) {
   try {
-    const publicKey = await getAuthenticatedPublicKey(request);
-    if (!publicKey) {
+    const user = await getAuthenticatedUser(request);
+    if (!user) {
       return NextResponse.json(
         { error: 'Unauthorized - please sign in' },
         { status: 401 }
       );
     }
 
-    const captures = await db.getCaptures(publicKey);
+    const captures = await db.getCaptures(user.userId);
 
     return NextResponse.json({
       captures: captures.map(c => ({

@@ -1,34 +1,5 @@
 import { NextRequest } from 'next/server';
-import { createClient } from "@farcaster/quick-auth";
-
-const client = createClient();
-
-// Get authenticated user FID from JWT
-async function getAuthenticatedFid(request: NextRequest): Promise<number | null> {
-  const authorization = request.headers.get("Authorization");
-
-  if (!authorization?.startsWith("Bearer ")) {
-    return null;
-  }
-
-  try {
-    const token = authorization.split(" ")[1];
-    const domain = request.headers.get("host")?.replace('www.', '') || 'waifuverse.fun';
-
-    // Try both domain variants
-    let payload;
-    try {
-      payload = await client.verifyJwt({ token, domain });
-    } catch {
-      payload = await client.verifyJwt({ token, domain: `www.${domain}` });
-    }
-
-    return Number(payload.sub);
-  } catch (e) {
-    console.error('Auth failed:', e);
-    return null;
-  }
-}
+import { getAuthenticatedUser } from '@/lib/auth';
 
 // Waifu personalities and backgrounds
 const waifuPersonalities: Record<string, { name: string; personality: string; background: string }> = {
@@ -57,8 +28,8 @@ const waifuPersonalities: Record<string, { name: string; personality: string; ba
 export async function POST(req: NextRequest) {
   try {
     // Verify authentication
-    const fid = await getAuthenticatedFid(req);
-    if (!fid) {
+    const user = await getAuthenticatedUser(req);
+    if (!user) {
       return new Response('Unauthorized', { status: 401 });
     }
 
