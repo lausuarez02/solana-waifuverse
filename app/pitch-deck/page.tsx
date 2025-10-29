@@ -10,7 +10,7 @@ export default function PitchDeck() {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [findHerSubSlide, setFindHerSubSlide] = useState(0);
   const [hoveredRegion, setHoveredRegion] = useState<string | null>(null);
-  const totalSlides = 11;
+  const totalSlides = 12;
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % totalSlides);
@@ -272,7 +272,7 @@ export default function PitchDeck() {
         className={`${styles.slide} ${styles.mapSlide} ${currentSlide === 5 ? styles.active : ""}`}
       >
         <div className={styles.mapContainer}>
-          <h2 className={styles.slideTitle}>Global Reach</h2>
+          <h2 className={styles.slideTitle}>Region-specific waifus</h2>
 
           <div className={styles.worldMap}>
             {/* Brazil Region */}
@@ -378,9 +378,90 @@ export default function PitchDeck() {
         </div>
       </div>
 
-      {/* Slide 6: Business Model & Economy */}
+      {/* Slide 6: Coin Partnership */}
       <div
-        className={`${styles.slide} ${styles.businessSlide} ${currentSlide === 6 ? styles.active : ""}`}
+        className={`${styles.slide} ${styles.coinPartnershipSlide} ${currentSlide === 6 ? styles.active : ""}`}
+      >
+        <div className={styles.slideContent}>
+          <h2 className={styles.slideTitle}>Coin Partnership</h2>
+
+          <p className={styles.coinDescription}>
+            Get rare waifus from each particular chain, which will give you rewards of that coin.
+          </p>
+
+          <div className={styles.coinWaifusGrid}>
+            {/* Solana Waifu */}
+            <div className={styles.coinBox}>
+              <div className={styles.coinWaifuImage}>
+                <Image
+                  src="/waifusolanarm.png"
+                  alt="Solana Waifu"
+                  width={280}
+                  height={280}
+                  className={styles.waifuCoinImg}
+                />
+              </div>
+              <div className={styles.coinBadge}>
+                <Image
+                  src="/solana.jpeg"
+                  alt="Solana"
+                  width={60}
+                  height={60}
+                  className={styles.coinIcon}
+                />
+              </div>
+            </div>
+
+            {/* Bonk Waifu */}
+            <div className={styles.coinBox}>
+              <div className={styles.coinWaifuImage}>
+                <Image
+                  src="/waifuwonkrm.png"
+                  alt="Bonk Waifu"
+                  width={280}
+                  height={280}
+                  className={styles.waifuCoinImg}
+                />
+              </div>
+              <div className={styles.coinBadge}>
+                <Image
+                  src="/bonk.jpg"
+                  alt="Bonk"
+                  width={60}
+                  height={60}
+                  className={styles.coinIcon}
+                />
+              </div>
+            </div>
+
+            {/* Pump Waifu */}
+            <div className={styles.coinBox}>
+              <div className={styles.coinWaifuImage}>
+                <Image
+                  src="/waifupumdumrm.png"
+                  alt="Pump Waifu"
+                  width={280}
+                  height={280}
+                  className={styles.waifuCoinImg}
+                />
+              </div>
+              <div className={styles.coinBadge}>
+                <Image
+                  src="/pump.jpg"
+                  alt="Pump"
+                  width={60}
+                  height={60}
+                  className={styles.coinIcon}
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Slide 7: Business Model & Economy */}
+      <div
+        className={`${styles.slide} ${styles.businessSlide} ${currentSlide === 7 ? styles.active : ""}`}
       >
         <div className={styles.businessContent}>
           <h2 className={styles.businessTitle}>Business Model & Economy</h2>
@@ -392,6 +473,8 @@ export default function PitchDeck() {
                 <li>NFT Minting (after 7 days)</li>
                 <li>Evolution Payments</li>
                 <li>Charm Purchases</li>
+                <li>Location Ads</li>
+                <li>Coin Waifus</li>
                 <li>Secondary Market Royalties (5% fee)</li>
               </ul>
             </div>
@@ -409,9 +492,9 @@ export default function PitchDeck() {
         </div>
       </div>
 
-      {/* Slide 7: Market Opportunity */}
+      {/* Slide 8: Market Opportunity */}
       <div
-        className={`${styles.slide} ${styles.defaultBgSlide} ${currentSlide === 7 ? styles.active : ""}`}
+        className={`${styles.slide} ${styles.defaultBgSlide} ${currentSlide === 8 ? styles.active : ""}`}
       >
         <div className={styles.slideContent}>
           <h2 className={styles.slideTitle}>Market Opportunity</h2>
@@ -450,9 +533,9 @@ export default function PitchDeck() {
         </div>
       </div>
 
-      {/* Slide 8: Team */}
+      {/* Slide 9: Team */}
       <div
-        className={`${styles.slide} ${styles.teamSlide} ${currentSlide === 8 ? styles.active : ""}`}
+        className={`${styles.slide} ${styles.teamSlide} ${currentSlide === 9 ? styles.active : ""}`}
       >
         <div className={styles.slideContent}>
           <h2 className={styles.slideTitle}>Team</h2>
@@ -477,9 +560,9 @@ export default function PitchDeck() {
         </div>
       </div>
 
-      {/* Slide 9: Roadmap */}
+      {/* Slide 10: Roadmap */}
       <div
-        className={`${styles.slide} ${styles.roadmapSlide} ${currentSlide === 9 ? styles.active : ""}`}
+        className={`${styles.slide} ${styles.roadmapSlide} ${currentSlide === 10 ? styles.active : ""}`}
       >
         <div className={styles.slideContent}>
           <h2 className={styles.slideTitle}>Roadmap</h2>
@@ -519,9 +602,9 @@ export default function PitchDeck() {
         </div>
       </div>
 
-      {/* Slide 10: Call to Action */}
+      {/* Slide 11: Call to Action */}
       <div
-        className={`${styles.slide} ${styles.ctaSlide} ${currentSlide === 10 ? styles.active : ""}`}
+        className={`${styles.slide} ${styles.ctaSlide} ${currentSlide === 11 ? styles.active : ""}`}
       >
         <div className={styles.ctaContent}>
           <h2 className={styles.ctaTitle}>Want to try?</h2>

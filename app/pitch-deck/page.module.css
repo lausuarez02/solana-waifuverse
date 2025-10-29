@@ -734,7 +734,26 @@
 
 /* Slide 5: Global Map */
 .mapSlide {
-  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+  background-image: url('/waifuversepitchcity.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.mapSlide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.mapSlide .mapContainer {
+  position: relative;
+  z-index: 1;
 }
 
 .mapContainer {
@@ -759,6 +778,8 @@
   justify-content: center;
   overflow: visible;
   border-radius: 10px;
+  border: 4px solid #f15bb5;
+  box-shadow: 4px 4px 0px #000;
 }
 
 .worldMap::before {
@@ -857,6 +878,7 @@
   position: relative;
   z-index: 2;
   image-rendering: pixelated;
+  transition: filter 0.4s ease;
 }
 
 .pinDot {
@@ -988,7 +1010,139 @@
   }
 }
 
-/* Slide 6: Business Model & Economy */
+/* Slide 6: Coin Partnership */
+.coinPartnershipSlide {
+  background-image: url('/waifuversepitchcity.jpeg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.coinPartnershipSlide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.coinPartnershipSlide .slideContent {
+  position: relative;
+  z-index: 1;
+}
+
+.coinDescription {
+  font-size: clamp(0.6rem, 2vw, 0.9rem);
+  color: #fee2f8;
+  text-align: center;
+  margin-bottom: 3rem;
+  text-shadow: 2px 2px 0px #000;
+  line-height: 2;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.coinWaifusGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
+}
+
+.coinBox {
+  position: relative;
+  padding: 3rem 2.5rem;
+  background: rgba(241, 91, 181, 0.1);
+  border: 4px solid #f15bb5;
+  box-shadow: 4px 4px 0px #000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.3s ease;
+  min-height: 350px;
+}
+
+.coinBox:hover {
+  transform: translateY(-5px);
+  box-shadow: 6px 6px 0px #000;
+}
+
+.coinWaifuImage {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.waifuCoinImg {
+  width: 280px;
+  height: 280px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  filter: drop-shadow(2px 2px 0px #000);
+}
+
+.coinBadge {
+  position: absolute;
+  bottom: 15px;
+  right: 15px;
+  width: 70px;
+  height: 70px;
+  background: rgba(0, 0, 0, 0.8);
+  border: 4px solid #f15bb5;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 4px 4px 0px #000;
+  padding: 5px;
+}
+
+.coinIcon {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+@media (max-width: 768px) {
+  .coinWaifusGrid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .coinBox {
+    padding: 2rem 1.5rem;
+    min-height: 280px;
+  }
+
+  .waifuCoinImg {
+    width: 220px;
+    height: 220px;
+  }
+
+  .coinBadge {
+    width: 60px;
+    height: 60px;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .coinIcon {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+/* Slide 7: Business Model & Economy */
 .businessSlide {
   background-image: url('/bussines.jpeg');
   background-size: contain;
