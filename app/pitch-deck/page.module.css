@@ -1,0 +1,1967 @@
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
+
+.pitchContainer {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+  font-family: "Press Start 2P", monospace;
+}
+
+/* Slide Base Styles */
+.slide {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.5s ease, visibility 0.5s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.slide.active {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Default Background for slides without specific backgrounds */
+.defaultBgSlide {
+  background-image: url('/waifuversepitchcity.jpeg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.defaultBgSlide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.defaultBgSlide .slideContent,
+.defaultBgSlide .splitLayout,
+.defaultBgSlide .businessContent {
+  position: relative;
+  z-index: 1;
+}
+
+.slideContent {
+  max-width: 1200px;
+  width: 100%;
+  text-align: center;
+  color: white;
+}
+
+/* Slide 0: Hook */
+.hookSlide {
+  background-image: url('/waifusimpatica.jpeg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.hookSlide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.hookSlide .slideContent {
+  position: relative;
+  z-index: 1;
+}
+
+.hookTitle {
+  font-size: clamp(1.5rem, 6vw, 3rem);
+  color: #f15bb5;
+  margin-bottom: 2rem;
+  text-shadow: 4px 4px 0px #000;
+  letter-spacing: 0.05em;
+  line-height: 1.8;
+  max-width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.hookTagline {
+  font-size: clamp(1rem, 4vw, 2rem);
+  color: #fee2f8;
+  text-shadow: 3px 3px 0px #000;
+  letter-spacing: 0.05em;
+  line-height: 2;
+}
+
+/* Slide 1: Intro Image */
+.introSlide {
+  background-image: url('/wiafuversepitch1169.jpeg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.introSlide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.introContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+}
+
+.introTextContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  align-items: center;
+}
+
+.introLine {
+  font-size: clamp(1.2rem, 4vw, 2.5rem);
+  color: white;
+  text-align: center;
+  text-shadow: 4px 4px 0px #000, 0 0 20px rgba(0, 0, 0, 0.8);
+  letter-spacing: 0.05em;
+  margin: 0;
+  opacity: 0;
+}
+
+.introTextContainer.animate .introLine {
+  animation: typewriter 0.8s ease-in-out forwards;
+}
+
+.introTextContainer.animate .line1 {
+  animation-delay: 0s;
+}
+
+.introTextContainer.animate .line2 {
+  animation-delay: 1s;
+}
+
+.introTextContainer.animate .line3 {
+  animation-delay: 2s;
+}
+
+.introTextContainer.animate .line4 {
+  animation-delay: 3s;
+}
+
+@keyframes typewriter {
+  0% {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.introHighlight {
+  color: #f15bb5;
+  text-shadow: 4px 4px 0px #000, 0 0 30px rgba(241, 91, 181, 0.8);
+  margin-top: 0.5rem;
+}
+
+/* Typography */
+.mainTitle {
+  font-size: clamp(2rem, 8vw, 4rem);
+  color: #f15bb5;
+  margin-bottom: 1rem;
+  text-shadow: 4px 4px 0px #000;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+}
+
+.tagline {
+  font-size: clamp(0.8rem, 3vw, 1.5rem);
+  color: #fee2f8;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 0px #000;
+  line-height: 2;
+}
+
+.slideTitle {
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  color: #f15bb5;
+  margin-bottom: 1.5rem;
+  text-shadow: 3px 3px 0px #000;
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+}
+
+.subtitle {
+  font-size: clamp(0.6rem, 2vw, 1rem);
+  color: #fee2f8;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 0px #000;
+  line-height: 2;
+}
+
+.description {
+  font-size: clamp(0.5rem, 1.5vw, 0.8rem);
+  line-height: 2;
+  color: #ffffff;
+  text-shadow: 1px 1px 0px #000;
+}
+
+/* Slide 1: Hero/Hook */
+.heroDescription {
+  margin-bottom: 3rem;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.evolutionMockup {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  flex-wrap: wrap;
+}
+
+.evolutionStage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mockupBox {
+  width: 120px;
+  height: 120px;
+  border: 4px solid #f15bb5;
+  background: rgba(241, 91, 181, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 4px 4px 0px #000;
+  position: relative;
+}
+
+.pixelSprite,
+.illustrationSprite,
+.photoSprite {
+  width: 80%;
+  height: 80%;
+  background: linear-gradient(135deg, #f15bb5 0%, #fee2f8 100%);
+  image-rendering: pixelated;
+}
+
+.pixelSprite {
+  background: repeating-conic-gradient(
+    #f15bb5 0% 25%,
+    #fee2f8 0% 50%
+  ) 50% / 20px 20px;
+}
+
+.illustrationSprite {
+  background: linear-gradient(135deg, #f15bb5 0%, #fee2f8 100%);
+  border-radius: 10%;
+}
+
+.photoSprite {
+  background: radial-gradient(circle, #fee2f8 0%, #f15bb5 100%);
+  border-radius: 50%;
+}
+
+.arrow {
+  font-size: 2rem;
+  color: #f15bb5;
+  text-shadow: 2px 2px 0px #000;
+}
+
+.stageLabel {
+  font-size: 0.6rem;
+  color: #fee2f8;
+  text-shadow: 1px 1px 0px #000;
+  line-height: 2;
+}
+
+.features {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1.5rem;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.feature {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(241, 91, 181, 0.1);
+  border: 2px solid #f15bb5;
+  box-shadow: 2px 2px 0px #000;
+  font-size: 0.5rem;
+  line-height: 2;
+  text-align: left;
+}
+
+.featureIcon {
+  font-size: 1.5rem;
+  filter: grayscale(100%) contrast(200%);
+}
+
+/* Slide 2: Why Waifuverse */
+.whySlide {
+  background-image: url('/waifuversepitchcity.jpeg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.whySlide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.whySlide .slideContent {
+  position: relative;
+  z-index: 1;
+}
+
+.whyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  max-width: 1000px;
+  margin: 3rem auto 0;
+}
+
+.whyCard {
+  padding: 2rem;
+  background: rgba(241, 91, 181, 0.1);
+  border: 3px solid #f15bb5;
+  box-shadow: 3px 3px 0px #000;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.whyIconSvg {
+  width: 90px;
+  height: auto;
+  max-height: 90px;
+  filter: drop-shadow(3px 3px 0px #000);
+  display: block;
+}
+
+.whyIconImg {
+  width: 70px;
+  height: auto;
+  image-rendering: pixelated;
+  filter: drop-shadow(3px 3px 0px #000);
+  display: block;
+}
+
+.whyIcon {
+  font-size: 3rem;
+  filter: grayscale(100%) contrast(200%);
+}
+
+.whyText {
+  font-size: clamp(0.5rem, 1.5vw, 0.7rem);
+  color: #fee2f8;
+  line-height: 2;
+  text-shadow: 1px 1px 0px #000;
+  text-align: left;
+}
+
+/* Slide 5 & 6: Split Layout */
+.splitLayout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 3rem;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.videoPlaceholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.phoneMockup {
+  width: 280px;
+  height: 500px;
+  border: 8px solid #f15bb5;
+  border-radius: 30px;
+  background: rgba(241, 91, 181, 0.1);
+  box-shadow: 4px 4px 0px #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.phoneMockup::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 6px;
+  background: transparent;
+  border-radius: 3px;
+  z-index: 2;
+}
+
+.phoneMockupLarge {
+  width: 350px;
+  height: 620px;
+  border: 8px solid #f15bb5;
+  border-radius: 30px;
+  background: rgba(241, 91, 181, 0.1);
+  box-shadow: 4px 4px 0px #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+
+.phoneMockupLarge::before {
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 6px;
+  background: transparent;
+  border-radius: 3px;
+  z-index: 2;
+}
+
+.phoneVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 22px;
+}
+
+.mockupLabel {
+  font-size: 0.6rem;
+  color: #fee2f8;
+  text-shadow: 1px 1px 0px #000;
+}
+
+.contentSection {
+  text-align: left;
+}
+
+/* Sub-slide navigation */
+.subSlideNavigation {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+}
+
+.subSlideTab {
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(0.4rem, 1.2vw, 0.6rem);
+  padding: 0.8rem 1.5rem;
+  background: rgba(241, 91, 181, 0.2);
+  border: 3px solid #f15bb5;
+  color: #fee2f8;
+  cursor: pointer;
+  box-shadow: 3px 3px 0px #000;
+  transition: all 0.2s ease;
+  text-shadow: 1px 1px 0px #000;
+}
+
+.subSlideTab:hover {
+  background: rgba(241, 91, 181, 0.4);
+  transform: translateY(-2px);
+}
+
+.subSlideTab.activeTab {
+  background: #f15bb5;
+  color: white;
+  transform: translateY(0);
+}
+
+.subSlideContent {
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stepsList {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 2rem;
+}
+
+.stepItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.stepBullet {
+  color: #f15bb5;
+  font-size: 1.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+  text-shadow: 2px 2px 0px #000;
+}
+
+.stepText {
+  font-size: clamp(0.5rem, 1.5vw, 0.7rem);
+  color: #fee2f8;
+  line-height: 2;
+  text-shadow: 1px 1px 0px #000;
+  margin: 0;
+}
+
+.evolutionList {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  margin-top: 2rem;
+}
+
+.evolutionItem {
+  padding: 1.5rem;
+  background: rgba(241, 91, 181, 0.1);
+  border: 3px solid #f15bb5;
+  box-shadow: 3px 3px 0px #000;
+}
+
+.evolutionStageTitle {
+  font-size: clamp(0.7rem, 2vw, 1rem);
+  color: #f15bb5;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 0px #000;
+  line-height: 2;
+}
+
+.evolutionDescription {
+  font-size: clamp(0.5rem, 1.5vw, 0.7rem);
+  color: #fee2f8;
+  line-height: 2;
+  text-shadow: 1px 1px 0px #000;
+  margin: 0;
+}
+
+@media (max-width: 768px) {
+  .splitLayout {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .videoPlaceholder {
+    min-height: 300px;
+  }
+
+  .phoneMockup {
+    width: 220px;
+    height: 400px;
+  }
+
+  .contentSection {
+    text-align: center;
+  }
+
+  .stepItem {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+}
+
+/* Slide 3: Gameplay */
+.gameplaySlide {
+  background-image: url('/gameplay.jpeg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.gameplaySlide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.gameplaySlide .slideContent {
+  position: relative;
+  z-index: 1;
+}
+
+/* Slide 2: Gameplay Loop */
+.gameplayLoop {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.loopStep {
+  flex: 1;
+  min-width: 180px;
+  padding: 1.5rem 1rem;
+  background: rgba(241, 91, 181, 0.1);
+  border: 3px solid #f15bb5;
+  box-shadow: 3px 3px 0px #000;
+}
+
+.stepNumber {
+  width: 50px;
+  height: 50px;
+  background: #f15bb5;
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin: 0 auto 1rem;
+  box-shadow: 2px 2px 0px #000;
+}
+
+.stepTitle {
+  font-size: 0.8rem;
+  color: #f15bb5;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 0px #000;
+  line-height: 2;
+}
+
+.stepDescription {
+  font-size: 0.5rem;
+  color: #fee2f8;
+  line-height: 1.8;
+  text-shadow: 1px 1px 0px #000;
+}
+
+.loopArrow {
+  font-size: 2rem;
+  color: #f15bb5;
+  text-shadow: 2px 2px 0px #000;
+  display: none;
+}
+
+@media (min-width: 768px) {
+  .loopArrow {
+    display: block;
+  }
+}
+
+.note {
+  padding: 1rem;
+  background: rgba(254, 226, 248, 0.1);
+  border: 2px solid #fee2f8;
+  box-shadow: 2px 2px 0px #000;
+  max-width: 600px;
+  margin: 2rem auto 0;
+}
+
+.note p {
+  font-size: 0.5rem;
+  color: #fee2f8;
+  line-height: 2;
+  margin: 0;
+  text-shadow: 1px 1px 0px #000;
+}
+
+/* Slide 5: Global Map */
+.mapSlide {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+}
+
+.mapContainer {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.worldMap {
+  position: relative;
+  width: 90%;
+  max-width: 1100px;
+  height: 550px;
+  margin: 1.5rem auto;
+  background-image: url('/mapst.png');
+  background-size: cover;
+  background-position: center center;
+  background-repeat: no-repeat;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: visible;
+  border-radius: 10px;
+}
+
+.worldMap::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  z-index: 0;
+  border-radius: 10px;
+}
+
+.mapRegion {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  cursor: pointer;
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  z-index: 1;
+  transform-origin: center center;
+}
+
+.mapRegion:hover {
+  z-index: 10;
+}
+
+/* Posiciones recentradas para mapst.png */
+
+/* Brasil - centro-este de América del Sur */
+.brazilRegion {
+  left: 30%;
+  top: 65%;
+}
+
+/* USA - centro de América del Norte */
+.usaRegion {
+  left: 17%;
+  top: 32%;
+}
+
+/* Rusia - centro-norte de Eurasia */
+.russiaRegion {
+  left: 64%;
+  top: 25%;
+}
+
+/* Italia - sur de Europa */
+.italyRegion {
+  left: 49%;
+  top: 36%;
+}
+
+/* Japón - este de Asia */
+.japanRegion {
+  left: 76%;
+  top: 34%;
+}
+
+.regionContent {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.regionPin {
+  position: relative;
+  width: 60px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.regionPinImage {
+  position: relative;
+  width: 80px;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: transparent;
+}
+
+.waifuImage {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  filter: drop-shadow(0 0 20px #f15bb5);
+  animation: pulse 2s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+  image-rendering: pixelated;
+}
+
+.pinDot {
+  width: 24px;
+  height: 24px;
+  background: #f15bb5;
+  border: 3px solid #000;
+  border-radius: 50%;
+  box-shadow: 3px 3px 0px #000, 0 0 20px #f15bb5;
+  animation: pulse 2s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
+}
+
+.pinGlow {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  background: radial-gradient(circle, rgba(241, 91, 181, 0.4) 0%, rgba(241, 91, 181, 0) 80%);
+  border-radius: 50%;
+  animation: pulseGlow 2s ease-in-out infinite;
+  z-index: 1;
+  pointer-events: none;
+}
+
+@keyframes pulse {
+  0%, 100% {
+    transform: scale(1);
+    box-shadow: 3px 3px 0px #000, 0 0 20px #f15bb5;
+  }
+  50% {
+    transform: scale(1.15);
+    box-shadow: 3px 3px 0px #000, 0 0 30px #f15bb5, 0 0 40px rgba(241, 91, 181, 0.5);
+  }
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.6;
+  }
+  50% {
+    transform: scale(1.5);
+    opacity: 0.3;
+  }
+}
+
+.regionLabel {
+  margin-top: 0.5rem;
+  font-size: 0.7rem;
+  color: #fee2f8;
+  text-shadow: 2px 2px 0px #000;
+  white-space: nowrap;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  transform: translateY(-5px);
+}
+
+.mapRegion:hover .regionLabel {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.mapRegion.zoomed {
+  transform: scale(3);
+  z-index: 10;
+  filter: drop-shadow(0 0 30px rgba(241, 91, 181, 0.8));
+}
+
+.mapRegion.zoomed .pinDot {
+  animation: none;
+  transform: scale(1);
+  box-shadow: 4px 4px 0px #000, 0 0 40px #f15bb5, 0 0 60px rgba(241, 91, 181, 0.9);
+}
+
+.mapRegion.zoomed .waifuImage {
+  animation: none;
+  filter: drop-shadow(4px 4px 0px #000) drop-shadow(0 0 40px #f15bb5) drop-shadow(0 0 60px rgba(241, 91, 181, 0.9));
+}
+
+.mapRegion.zoomed .pinGlow {
+  animation: none;
+  transform: scale(2);
+  opacity: 0.8;
+}
+
+.mapRegion.zoomed .regionLabel {
+  opacity: 1;
+  transform: translateY(0);
+  font-size: 0.6rem;
+  text-shadow: 3px 3px 0px #000, 0 0 10px #f15bb5;
+}
+
+@media (max-width: 768px) {
+  .worldMap {
+    height: 400px;
+  }
+
+  .mapRegion {
+    width: 80px;
+    height: 80px;
+  }
+
+  .regionPin {
+    width: 50px;
+    height: 50px;
+  }
+
+  .pinDot {
+    width: 18px;
+    height: 18px;
+  }
+
+  .pinGlow {
+    width: 30px;
+    height: 30px;
+  }
+
+  .regionLabel {
+    font-size: 0.6rem;
+  }
+
+  .mapRegion.zoomed {
+    transform: scale(2.2);
+  }
+
+  .mapRegion.zoomed .regionLabel {
+    font-size: 0.5rem;
+  }
+}
+
+/* Slide 6: Business Model & Economy */
+.businessSlide {
+  background-image: url('/bussines.jpeg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.businessSlide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.businessContent {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 2rem 3rem;
+}
+
+.businessTitle {
+  font-size: clamp(1.5rem, 5vw, 2.5rem);
+  color: #f15bb5;
+  margin-bottom: 2rem;
+  text-shadow: 3px 3px 0px #000;
+  letter-spacing: 0.05em;
+  line-height: 1.5;
+  align-self: flex-end;
+  text-align: right;
+  padding-right: 2rem;
+}
+
+.businessCardsContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  max-width: 500px;
+  margin-left: auto;
+  margin-right: 3rem;
+}
+
+@media (max-width: 768px) {
+  .businessContent {
+    align-items: center;
+    padding: 2rem;
+  }
+
+  .businessTitle {
+    align-self: center;
+    text-align: center;
+    padding-right: 0;
+  }
+
+  .businessCardsContainer {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+/* Slide 7: Business Model & Economy */
+.businessModelGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+  max-width: 1100px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.businessModelCard {
+  padding: 2.5rem 2rem;
+  background: rgba(254, 226, 248, 0.1);
+  border: 4px solid #f15bb5;
+  box-shadow: 4px 4px 0px #000;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  position: relative;
+  border-radius: 20px;
+}
+
+.businessIcon {
+  font-size: 4rem;
+  filter: grayscale(100%) contrast(200%);
+  margin-bottom: 0.5rem;
+}
+
+.businessCardTitle {
+  font-size: clamp(0.7rem, 2vw, 1rem);
+  color: #f15bb5;
+  text-shadow: 2px 2px 0px #000;
+  line-height: 2;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.businessCardDescription {
+  font-size: clamp(0.5rem, 1.5vw, 0.7rem);
+  color: #fee2f8;
+  line-height: 2;
+  text-shadow: 1px 1px 0px #000;
+  margin: 0;
+}
+
+.feeLabel {
+  position: absolute;
+  bottom: -15px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1a4d2e;
+  color: white;
+  padding: 0.8rem 2rem;
+  border: 3px solid #000;
+  box-shadow: 3px 3px 0px #000;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  font-weight: bold;
+  text-shadow: 2px 2px 0px #000;
+  border-radius: 30px;
+}
+
+.futureBadge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #2e4c6d;
+  color: white;
+  padding: 0.5rem 1rem;
+  border: 3px solid #000;
+  box-shadow: 2px 2px 0px #000;
+  font-size: 0.5rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 0px #000;
+  border-radius: 15px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+@media (max-width: 768px) {
+  .businessModelGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .businessModelCard {
+    padding: 2rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+}
+
+/* Slide 3: Evolution & Economy */
+.evolutionShowcase {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.showcaseStage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.showcaseBox {
+  width: 150px;
+  height: 150px;
+  border: 4px solid #f15bb5;
+  background: rgba(241, 91, 181, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 4px 4px 0px #000;
+}
+
+.pixelShowcase,
+.illustrationShowcase,
+.photoShowcase {
+  width: 80%;
+  height: 80%;
+}
+
+.pixelShowcase {
+  background: repeating-conic-gradient(
+    #f15bb5 0% 25%,
+    #fee2f8 0% 50%
+  ) 50% / 15px 15px;
+  image-rendering: pixelated;
+}
+
+.illustrationShowcase {
+  background: linear-gradient(135deg, #f15bb5 0%, #fee2f8 100%);
+  border-radius: 10%;
+}
+
+.photoShowcase {
+  background: radial-gradient(circle, #fee2f8 0%, #f15bb5 100%);
+  border-radius: 50%;
+}
+
+.showcaseInfo {
+  text-align: center;
+}
+
+.showcaseInfo h3 {
+  font-size: 0.7rem;
+  color: #f15bb5;
+  margin-bottom: 0.5rem;
+  text-shadow: 2px 2px 0px #000;
+  line-height: 2;
+}
+
+.showcaseInfo p {
+  font-size: 0.5rem;
+  color: #fee2f8;
+  margin-bottom: 0.5rem;
+  line-height: 2;
+  text-shadow: 1px 1px 0px #000;
+}
+
+.progressLabel {
+  font-size: 0.5rem;
+  color: #ffffff;
+  background: rgba(241, 91, 181, 0.3);
+  padding: 0.3rem 0.6rem;
+  border: 1px solid #f15bb5;
+  display: inline-block;
+  text-shadow: 1px 1px 0px #000;
+  line-height: 1.5;
+}
+
+.economyGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.economyCard {
+  padding: 2.5rem 2rem;
+  background: rgba(241, 91, 181, 0.1);
+  border: 3px solid #f15bb5;
+  box-shadow: 3px 3px 0px #000;
+  text-align: left;
+}
+
+.economyCard h3 {
+  font-size: 0.8rem;
+  color: #f15bb5;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 0px #000;
+  line-height: 2;
+  text-align: center;
+}
+
+.economyCard ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.economyCard li {
+  font-size: 0.5rem;
+  color: #fee2f8;
+  line-height: 2.5;
+  padding-left: 1.5rem;
+  position: relative;
+  text-shadow: 1px 1px 0px #000;
+}
+
+.economyCard li::before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #f15bb5;
+}
+
+/* Slide 8: Market Opportunity */
+.marketIntro {
+  font-size: clamp(0.6rem, 2vw, 0.9rem);
+  color: #fee2f8;
+  text-align: center;
+  margin-bottom: 3rem;
+  text-shadow: 2px 2px 0px #000;
+  line-height: 2;
+}
+
+.marketCardsGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+  margin-bottom: 3rem;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.marketCard {
+  padding: 2.5rem 2rem;
+  background: rgba(241, 91, 181, 0.1);
+  border: 4px solid #f15bb5;
+  box-shadow: 4px 4px 0px #000;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  transition: transform 0.2s ease;
+}
+
+.marketCard:hover {
+  transform: translateY(-5px);
+}
+
+.marketAmount {
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: #f15bb5;
+  font-weight: bold;
+  text-shadow: 4px 4px 0px #000;
+  line-height: 1;
+}
+
+.marketCardTitle {
+  font-size: clamp(0.7rem, 2vw, 1rem);
+  color: #fee2f8;
+  text-shadow: 2px 2px 0px #000;
+  line-height: 2;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.marketCardDetail {
+  font-size: clamp(0.5rem, 1.5vw, 0.65rem);
+  color: #ffffff;
+  line-height: 2;
+  text-shadow: 1px 1px 0px #000;
+  margin: 0;
+  opacity: 0.9;
+}
+
+.marketGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 3rem;
+  margin-bottom: 3rem;
+  max-width: 900px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.chartContainer {
+  padding: 2rem;
+  background: rgba(241, 91, 181, 0.05);
+  border: 3px solid #f15bb5;
+  box-shadow: 3px 3px 0px #000;
+}
+
+.chartTitle {
+  font-size: 0.7rem;
+  color: #f15bb5;
+  margin-bottom: 2rem;
+  text-shadow: 2px 2px 0px #000;
+  line-height: 2;
+}
+
+.donutChart {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+.chartSvg {
+  max-width: 250px;
+  height: auto;
+  filter: drop-shadow(2px 2px 0px #000);
+}
+
+.chartCenterText {
+  font-family: "Press Start 2P", monospace;
+}
+
+.chartCenterSubtext {
+  font-family: "Press Start 2P", monospace;
+}
+
+.chartLegend {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  font-size: 0.5rem;
+  color: #fee2f8;
+  text-shadow: 1px 1px 0px #000;
+  line-height: 2;
+}
+
+.legendColor {
+  width: 20px;
+  height: 20px;
+  border: 2px solid #000;
+  box-shadow: 1px 1px 0px #000;
+}
+
+.barChart {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  height: 250px;
+  padding: 1rem;
+}
+
+.barWrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 150px;
+  height: 100%;
+}
+
+.bar {
+  width: 100%;
+  background: #f15bb5;
+  border: 3px solid #000;
+  box-shadow: 3px 3px 0px #000;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 1rem;
+  margin-bottom: 1rem;
+}
+
+.barLabel {
+  font-size: 0.8rem;
+  color: white;
+  text-shadow: 2px 2px 0px #000;
+}
+
+.barXLabel {
+  font-size: 0.5rem;
+  color: #fee2f8;
+  text-shadow: 1px 1px 0px #000;
+  line-height: 2;
+  text-align: center;
+}
+
+.chartNote {
+  font-size: 0.5rem;
+  color: #fee2f8;
+  line-height: 2;
+  margin-top: 1rem;
+  text-shadow: 1px 1px 0px #000;
+}
+
+.targetAudience {
+  padding: 2rem;
+  background: rgba(241, 91, 181, 0.1);
+  border: 3px solid #f15bb5;
+  box-shadow: 3px 3px 0px #000;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.targetAudience h3 {
+  font-size: 0.8rem;
+  color: #f15bb5;
+  margin-bottom: 1.5rem;
+  text-shadow: 2px 2px 0px #000;
+  line-height: 2;
+}
+
+.audienceTags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.tag {
+  padding: 0.6rem 1.2rem;
+  background: rgba(254, 226, 248, 0.2);
+  border: 2px solid #fee2f8;
+  color: #fee2f8;
+  font-size: 0.5rem;
+  box-shadow: 2px 2px 0px #000;
+  text-shadow: 1px 1px 0px #000;
+  line-height: 1.5;
+}
+
+/* Slide 9: Unified TAM Chart */
+.unifiedChart {
+  max-width: 700px;
+  margin: 2rem auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.unifiedSvg {
+  width: 100%;
+  max-width: 700px;
+  height: auto;
+  filter: drop-shadow(5px 5px 0px #000);
+}
+
+.chartText {
+  font-family: "Press Start 2P", monospace;
+  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+}
+
+@media (max-width: 768px) {
+  .unifiedChart {
+    max-width: 500px;
+  }
+
+  .unifiedSvg {
+    max-width: 500px;
+  }
+}
+
+/* Slide 9: Team */
+.teamSlide {
+  background-image: url('/team.jpeg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.teamSlide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.teamSlide .slideContent {
+  position: relative;
+  z-index: 1;
+}
+
+.teamGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 3rem;
+  max-width: 700px;
+  margin: 3rem auto;
+}
+
+.teamMember {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.pixelAvatar {
+  width: 200px;
+  height: 200px;
+  border: 4px solid #f15bb5;
+  border-radius: 50%;
+  background: linear-gradient(135deg, rgba(241, 91, 181, 0.3) 0%, rgba(254, 226, 248, 0.3) 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 4px 4px 0px #000;
+  overflow: hidden;
+}
+
+.avatarImage {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  image-rendering: pixelated;
+}
+
+.avatarPlaceholder {
+  font-size: 2rem;
+  color: #f15bb5;
+  text-shadow: 2px 2px 0px #000;
+  font-weight: bold;
+}
+
+.memberName {
+  font-size: 0.8rem;
+  color: #f15bb5;
+  text-shadow: 2px 2px 0px #000;
+  line-height: 2;
+}
+
+.memberRole {
+  font-size: 0.5rem;
+  color: #fee2f8;
+  text-shadow: 1px 1px 0px #000;
+  line-height: 2;
+}
+
+.teamNote {
+  padding: 1.5rem;
+  background: rgba(254, 226, 248, 0.1);
+  border: 2px solid #fee2f8;
+  box-shadow: 2px 2px 0px #000;
+  max-width: 600px;
+  margin: 2rem auto 0;
+}
+
+.teamNote p {
+  font-size: 0.5rem;
+  color: #fee2f8;
+  line-height: 2;
+  margin: 0;
+  text-shadow: 1px 1px 0px #000;
+}
+
+/* Slide 10: Roadmap */
+.roadmapSlide {
+  background-image: url('/roadmap.jpeg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.roadmapSlide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 0;
+}
+
+.roadmapSlide .slideContent {
+  position: relative;
+  z-index: 1;
+}
+
+/* Slide 9: Call to Action */
+.ctaSlide {
+  background-image: url('/callto.jpeg');
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.ctaSlide::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 0;
+}
+
+.ctaContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3rem;
+  height: 100%;
+}
+
+.ctaTitle {
+  font-size: clamp(2rem, 8vw, 4rem);
+  color: #f15bb5;
+  text-shadow: 4px 4px 0px #000;
+  letter-spacing: 0.1em;
+  text-align: center;
+  line-height: 1.5;
+}
+
+.ctaButton {
+  font-family: "Press Start 2P", monospace;
+  font-size: clamp(1rem, 3vw, 1.5rem);
+  color: white;
+  background: #f15bb5;
+  padding: 1.5rem 3rem;
+  border: 4px solid #000;
+  box-shadow: 6px 6px 0px #000;
+  text-decoration: none;
+  text-shadow: 2px 2px 0px #000;
+  letter-spacing: 0.1em;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-block;
+}
+
+.ctaButton:hover {
+  background: #fee2f8;
+  color: #f15bb5;
+  transform: translateY(-4px);
+  box-shadow: 8px 8px 0px #000;
+}
+
+.ctaButton:active {
+  transform: translateY(2px);
+  box-shadow: 3px 3px 0px #000;
+}
+
+.roadmapTimeline {
+  max-width: 800px;
+  margin: 3rem auto;
+  padding: 2rem;
+  position: relative;
+}
+
+.roadmapTimeline::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 4px;
+  background: #f15bb5;
+  transform: translateX(-50%);
+  box-shadow: 2px 0px 0px #000;
+}
+
+.timelineItem {
+  display: flex;
+  align-items: flex-start;
+  gap: 2rem;
+  margin-bottom: 3rem;
+  position: relative;
+}
+
+.timelineDot {
+  width: 30px;
+  height: 30px;
+  background: #f15bb5;
+  border: 4px solid #000;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 2px 2px 0px #000;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1;
+}
+
+.timelineContent {
+  flex: 1;
+  padding: 2rem;
+  background: rgba(241, 91, 181, 0.1);
+  border: 3px solid #f15bb5;
+  box-shadow: 3px 3px 0px #000;
+  text-align: left;
+  margin-left: calc(50% + 2rem);
+}
+
+.timelineTitle {
+  font-size: 0.8rem;
+  color: #f15bb5;
+  margin-bottom: 1rem;
+  text-shadow: 2px 2px 0px #000;
+  line-height: 2;
+}
+
+.timelineFeatures {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.featureItem {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.5rem;
+  color: #fee2f8;
+  line-height: 2;
+  text-shadow: 1px 1px 0px #000;
+}
+
+.checkmark {
+  color: #f15bb5;
+  font-size: 0.8rem;
+  text-shadow: 2px 2px 0px #000;
+}
+
+.timelineDescription {
+  font-size: 0.5rem;
+  color: #fee2f8;
+  line-height: 2;
+  text-shadow: 1px 1px 0px #000;
+}
+
+/* Navigation */
+.navigation {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  z-index: 100;
+}
+
+.navButton {
+  width: 50px;
+  height: 50px;
+  background: rgba(241, 91, 181, 0.2) !important;
+  border: 3px solid #f15bb5 !important;
+  color: #f15bb5 !important;
+  box-shadow: 3px 3px 0px #000 !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.navButton:hover {
+  background: rgba(241, 91, 181, 0.4) !important;
+  transform: translateY(-2px);
+}
+
+.navButton:active {
+  transform: translateY(1px) !important;
+}
+
+.dots {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+}
+
+.dot {
+  width: 15px;
+  height: 15px;
+  background: rgba(254, 226, 248, 0.3);
+  border: 2px solid #fee2f8;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 2px 2px 0px #000;
+}
+
+.dot:hover {
+  background: rgba(254, 226, 248, 0.5);
+}
+
+.dot.activeDot {
+  background: #f15bb5;
+  border-color: #f15bb5;
+  box-shadow: 2px 2px 0px #000, 0 0 10px #f15bb5;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .pitchContainer {
+    padding: 1rem;
+  }
+
+  .slide {
+    padding: 1rem;
+  }
+
+  .mainTitle {
+    font-size: 1.5rem;
+  }
+
+  .tagline {
+    font-size: 0.6rem;
+  }
+
+  .slideTitle {
+    font-size: 1.2rem;
+  }
+
+  .subtitle {
+    font-size: 0.5rem;
+  }
+
+  .description {
+    font-size: 0.4rem;
+  }
+
+  .evolutionMockup {
+    gap: 1rem;
+  }
+
+  .mockupBox {
+    width: 80px;
+    height: 80px;
+  }
+
+  .arrow {
+    font-size: 1.5rem;
+  }
+
+  .features {
+    grid-template-columns: 1fr;
+  }
+
+  .gameplayLoop {
+    flex-direction: column;
+  }
+
+  .loopStep {
+    min-width: 100%;
+  }
+
+  .marketGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .marketCardsGrid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .marketCard {
+    padding: 2rem 1.5rem;
+  }
+
+  .marketIntro {
+    font-size: 0.6rem;
+    margin-bottom: 2rem;
+  }
+
+  .teamGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .timelineContent {
+    margin-left: 0;
+    margin-top: 3rem;
+  }
+
+  .navigation {
+    gap: 1rem;
+  }
+
+  .navButton {
+    width: 40px;
+    height: 40px;
+  }
+
+  .dots {
+    gap: 0.5rem;
+  }
+
+  .dot {
+    width: 12px;
+    height: 12px;
+  }
+}
