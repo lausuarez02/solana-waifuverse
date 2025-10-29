@@ -386,7 +386,7 @@ export default function PitchDeck() {
           <h2 className={styles.slideTitle}>Coin Partnership</h2>
 
           <p className={styles.coinDescription}>
-            Get rare waifus from each particular chain, which will give you rewards of that coin.
+            Collect rare waifus from each specific coin, earn rewards as you hold or interact with them.
           </p>
 
           <div className={styles.coinWaifusGrid}>
