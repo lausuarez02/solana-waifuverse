@@ -16,7 +16,7 @@ interface UserData {
 
 export default function GameDashboard() {
   const router = useRouter();
-  const { publicKey, signMessage, connected } = useWallet();
+  const { publicKey, signMessage, connected, connecting, wallet } = useWallet();
   const [token, setToken] = useState<string | null>(null);
   const [userData, setUserData] = useState<UserData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -63,20 +63,58 @@ export default function GameDashboard() {
   }, [publicKey]);
 
   async function signIn() {
-    if (!publicKey || !signMessage) {
-      setError('Please connect your wallet first');
+    if (!connected) {
+      setError('Wallet is not connected. Please connect your wallet and try again.');
+      return;
+    }
+
+    if (!publicKey) {
+      setError('Wallet public key not found. Please reconnect your wallet.');
+      return;
+    }
+
+    if (!signMessage) {
+      setError(`Your wallet (${wallet?.adapter?.name || 'Unknown'}) does not support message signing. Please try a different wallet like Phantom or Solflare.`);
       return;
     }
 
     setIsLoading(true);
     setError(null);
+
+    console.log('Starting sign-in process...', {
+      wallet: wallet?.adapter?.name,
+      publicKey: publicKey.toString(),
+      connected,
+      signMessageAvailable: !!signMessage
+    });
+
     try {
       // Create a message to sign
       const message = `Sign this message to authenticate with Waifuverse.\n\nTimestamp: ${Date.now()}`;
       const encodedMessage = new TextEncoder().encode(message);
 
+      console.log('Requesting signature from wallet...');
+
       // Request signature from wallet
-      const signature = await signMessage(encodedMessage);
+      let signature;
+      try {
+        signature = await signMessage(encodedMessage);
+        console.log('Signature received successfully');
+      } catch (signErr) {
+        console.error("Signature error:", signErr);
+
+        // Check if user rejected
+        if (signErr instanceof Error) {
+          if (signErr.message.includes('User rejected') ||
+              signErr.message.includes('rejected') ||
+              signErr.message.includes('declined') ||
+              signErr.message.includes('denied')) {
+            throw new Error('You rejected the signature request. Please approve the request to sign in.');
+          }
+        }
+
+        throw new Error('Signature request failed. Please make sure your wallet is unlocked and try again.');
+      }
 
       // Send signature and public key to backend for verification
       const response = await fetch(`${window.location.origin}/api/auth`, {
@@ -103,8 +141,9 @@ export default function GameDashboard() {
       }
     } catch (err) {
       console.error("Authentication failed:", err);
-      setError(err instanceof Error ? err.message : 'Authentication failed');
-      signOut();
+      const errorMessage = err instanceof Error ? err.message : 'Authentication failed. Please try again.';
+      setError(errorMessage);
+      // Don't sign out here, just show the error
     } finally {
       setIsLoading(false);
     }
@@ -150,11 +189,15 @@ export default function GameDashboard() {
             <Button
               onClick={signIn}
               size="lg"
-              disabled={isLoading}
+              disabled={isLoading || connecting}
               className={styles.signInButton}
             >
-              {isLoading ? 'SIGNING IN...' : 'SIGN IN'}
+              {isLoading ? 'SIGNING IN...' : connecting ? 'CONNECTING...' : 'SIGN IN'}
             </Button>
+          )}
+
+          {connecting && (
+            <p className={styles.subtitle}>Connecting to wallet...</p>
           )}
         </div>
       </div>
