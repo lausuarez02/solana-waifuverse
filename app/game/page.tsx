@@ -181,6 +181,21 @@ export default function GameDashboard() {
             </div>
           )}
 
+          {wallet?.adapter?.name === 'Phantom' && !connected && (
+            <div style={{
+              padding: '1rem',
+              marginBottom: '1rem',
+              background: 'rgba(255, 193, 7, 0.1)',
+              border: '1px solid rgba(255, 193, 7, 0.3)',
+              borderRadius: '8px'
+            }}>
+              <p style={{ fontSize: '0.9rem', color: '#ffc107', margin: 0 }}>
+                ⚠️ Phantom wallet is experiencing connection issues.
+                Please try <strong>Solflare</strong> or <strong>Torus</strong> wallet instead.
+              </p>
+            </div>
+          )}
+
           <div style={{ marginBottom: '1rem' }}>
             <WalletMultiButton />
           </div>
