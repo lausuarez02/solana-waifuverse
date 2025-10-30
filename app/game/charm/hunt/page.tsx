@@ -31,7 +31,6 @@ export default function HuntPage() {
   const [cameraError, setCameraError] = useState<string | null>(null);
   const [waitingForPermissions, setWaitingForPermissions] = useState(true);
   const [debugInfo, setDebugInfo] = useState<string[]>([]);
-  const [gpsError, setGpsError] = useState<string | null>(null);
 
   const ar = useCompassAR(spawn, 65); // 65° FOV
   const canSee = ar.visible && ar.inRadius;
@@ -61,7 +60,7 @@ export default function HuntPage() {
       }, 1000);
       return () => clearInterval(interval);
     }
-  }, [compassGranted, ar.heading, ar.distance, ar.relAngle, ar.me, spawn, debugInfo.length]);
+  }, [compassGranted, ar.heading, ar.distance, ar.relAngle, ar.me, ar.usingTestLocation, spawn, debugInfo.length]);
 
   // Fetch nearest uncaptured spawn
   useEffect(() => {
@@ -217,7 +216,6 @@ export default function HuntPage() {
 
     try {
       // Check if API exists
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const hasAPI = typeof (DeviceOrientationEvent as any)?.requestPermission === "function";
       logs.push(`API exists: ${hasAPI}`);
       logs.push(`GPS will auto-fallback to test location if blocked`);
@@ -417,7 +415,7 @@ export default function HuntPage() {
                 {!cameraGranted && (
                   <>
                     <p style={{ fontSize: '0.75rem', opacity: 0.8, marginBottom: '0.5rem' }}>
-                      Next, we'll ask for camera access
+                      Next, we&apos;ll ask for camera access
                     </p>
                     <Button
                       size="sm"

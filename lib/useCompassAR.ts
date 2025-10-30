@@ -55,7 +55,6 @@ export function useCompassAR(spawn: Spawn | null, fov = 65) {
     console.log('DeviceOrientationEvent exists:', typeof DeviceOrientationEvent !== 'undefined');
     console.log('DeviceOrientationEvent:', DeviceOrientationEvent);
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const hasRequestPermission = typeof (DeviceOrientationEvent as any)?.requestPermission === "function";
     console.log('DeviceOrientationEvent.requestPermission exists:', hasRequestPermission);
 
@@ -63,7 +62,6 @@ export function useCompassAR(spawn: Spawn | null, fov = 65) {
     if (hasRequestPermission) {
       console.log('🍎 iOS 13+ detected - requesting DeviceOrientation permission');
       try {
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         console.log('📱 Calling DeviceOrientationEvent.requestPermission()...');
         const res = await (DeviceOrientationEvent as any).requestPermission();
         console.log('📱 DeviceOrientation permission result:', res);
@@ -128,7 +126,6 @@ export function useCompassAR(spawn: Spawn | null, fov = 65) {
     window.addEventListener("deviceorientationabsolute", handler, true);
 
     // Also try the property assignment method
-    const oldHandler = window.ondeviceorientation;
     window.ondeviceorientation = (e) => {
       console.log('ondeviceorientation property handler fired!');
       handler(e);
