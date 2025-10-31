@@ -15,11 +15,6 @@ import {
   TOKEN_PROGRAM_ID,
   ASSOCIATED_TOKEN_PROGRAM_ID,
   getAssociatedTokenAddress,
-  createAssociatedTokenAccountInstruction,
-  createInitializeMintInstruction,
-  createMintToInstruction,
-  MINT_SIZE,
-  getMinimumBalanceForRentExemptMint
 } from '@solana/spl-token';
 import * as crypto from 'crypto';
 

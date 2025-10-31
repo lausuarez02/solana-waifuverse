@@ -1,13 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { useWallet, useConnection } from "@solana/wallet-adapter-react";
-import { Transaction, SystemProgram, PublicKey, LAMPORTS_PER_SOL, Keypair } from "@solana/web3.js";
+import { useWallet } from "@solana/wallet-adapter-react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/8bit/button";
 import { WaifuCard } from "@/components/WaifuCard";
 import { getCaptured, type CapturedWaifu } from "@/lib/store";
-import { buildMintTransaction, getSolscanTxLink } from "@/lib/solana";
 import styles from "./page.module.css";
 
 // Waifu data with stats and lore
@@ -40,8 +38,7 @@ const waifuData: Record<string, {
 
 export default function CollectionPage() {
   const router = useRouter();
-  const { publicKey, connected, sendTransaction } = useWallet();
-  const { connection } = useConnection();
+  const { publicKey, connected } = useWallet();
 
   const [captured, setCaptured] = useState<CapturedWaifu[]>([]);
   const [minted, setMinted] = useState<Set<string>>(new Set());
