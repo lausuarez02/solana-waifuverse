@@ -4,7 +4,7 @@
 A Pokemon GO-style NFT collection game built as a Farcaster Mini App. Capture waifus in the real world, mint them as NFTs on Base blockchain, and chat with your collection using AI.
 
 ## Features
-
+SMART contracts: https://github.com/lausuarez02/solana-smc-waifuverse
 - 🗺️ **Real-world Map** - Hunt waifus using your GPS location
 - 💖 **NFT Minting** - Mint captured waifus as ERC-721 NFTs on Base
 - 💬 **AI Chat** - Talk to your minted waifus powered by Grok AI
