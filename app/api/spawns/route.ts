@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server';
 import { db, type WaifuSpawn } from '@/lib/supabase-db';
+import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 
 // Initialize spawn data with supply limits and time windows
 // This runs once to set up the spawns
@@ -14,7 +15,7 @@ async function initializeSpawnsIfNeeded() {
     const initialSpawns: WaifuSpawn[] = [
       {
         id: "w1",
-        name: "Sakura",
+        name: "Sakura (Sol)", // Updated name to match contract
         lat: -34.6037,
         lng: -58.3816,
         radius: 50000, // 50km radius for testing
@@ -22,12 +23,12 @@ async function initializeSpawnsIfNeeded() {
         capturedImg: "/waifus/waifu00/waifus_00_captured.png",
         rarity: "common",
         emoji: "🌸",
-        max_supply: 100, // Max 100 mints
+        max_supply: 1000, // Max 1000 mints (matches contract)
         current_supply: 0,
         spawn_start: now.toISOString(),
         spawn_end: sevenDaysLater.toISOString(),
-        price: "0.001", // 0.001 ETH
-        contract_token_id: 0 // Contract uses ID 0 for Sakura (0-indexed)
+        price: String(0.1 * LAMPORTS_PER_SOL), // 0.1 SOL in lamports (matches contract)
+        contract_token_id: 1 // Contract uses ID 1 for Sol waifu (important: contract is 1-indexed!)
       },
       {
         id: "w2",
@@ -43,8 +44,8 @@ async function initializeSpawnsIfNeeded() {
         current_supply: 0,
         spawn_start: now.toISOString(),
         spawn_end: sevenDaysLater.toISOString(),
-        price: "0.002",
-        contract_token_id: 1 // Contract uses ID 1 for Luna (0-indexed)
+        price: String(0.15 * LAMPORTS_PER_SOL), // 0.15 SOL
+        contract_token_id: 2 // Waifu ID 2 in contract (add this waifu to contract!)
       },
       {
         id: "w3",
@@ -60,8 +61,8 @@ async function initializeSpawnsIfNeeded() {
         current_supply: 0,
         spawn_start: now.toISOString(),
         spawn_end: sevenDaysLater.toISOString(),
-        price: "0.005",
-        contract_token_id: 2 // Contract uses ID 2 for Yuki (0-indexed)
+        price: String(0.2 * LAMPORTS_PER_SOL), // 0.2 SOL
+        contract_token_id: 3 // Waifu ID 3 in contract (add this waifu to contract!)
       },
       {
         id: "w4",
@@ -77,8 +78,8 @@ async function initializeSpawnsIfNeeded() {
         current_supply: 0,
         spawn_start: now.toISOString(),
         spawn_end: sevenDaysLater.toISOString(),
-        price: "0.001",
-        contract_token_id: 3 // Contract uses ID 3 for Hana (0-indexed)
+        price: String(0.1 * LAMPORTS_PER_SOL), // 0.1 SOL
+        contract_token_id: 4 // Waifu ID 4 in contract (add this waifu to contract!)
       }
     ];
 
