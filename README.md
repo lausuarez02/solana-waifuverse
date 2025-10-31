@@ -5,7 +5,6 @@ A Pokemon GO-style NFT collection game built as a Farcaster Mini App. Capture wa
 
 ## Features
 
-
 - 🗺️ **Real-world Map** - Hunt waifus using your GPS location
 - 💖 **NFT Minting** - Mint captured waifus as ERC-721 NFTs on Base
 - 💬 **AI Chat** - Talk to your minted waifus powered by Grok AI
