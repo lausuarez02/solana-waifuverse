@@ -64,6 +64,7 @@ export default function MapPage() {
   const [locationError, setLocationError] = useState<string | null>(null);
   const [showWaifuList, setShowWaifuList] = useState(false);
   const [capturedIds, setCapturedIds] = useState<Set<string>>(new Set());
+  const [locationPermissionGranted, setLocationPermissionGranted] = useState(false);
 
   // Fetch spawns
   useEffect(() => {
@@ -107,10 +108,40 @@ export default function MapPage() {
     loadCaptures();
   }, []);
 
-  // Get user location
-  useEffect(() => {
+  // Request location permission
+  async function requestLocationPermission() {
     if (!navigator.geolocation) {
-      setLocationError('Geolocation not supported');
+      setLocationError('Geolocation not supported on this device');
+      return;
+    }
+
+    try {
+      // Request location once to trigger permission prompt
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+          setLocationPermissionGranted(true);
+          setLocationError(null);
+        },
+        (error) => {
+          setLocationError(error.message);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 10000
+        }
+      );
+    } catch {
+      setLocationError('Failed to request location permission');
+    }
+  }
+
+  // Get user location (only after permission granted)
+  useEffect(() => {
+    if (!locationPermissionGranted || !navigator.geolocation) {
       return;
     }
 
@@ -133,7 +164,7 @@ export default function MapPage() {
     );
 
     return () => navigator.geolocation.clearWatch(watchId);
-  }, []);
+  }, [locationPermissionGranted]);
 
   // Get device orientation (compass)
   useEffect(() => {
@@ -215,7 +246,16 @@ export default function MapPage() {
         </div>
       )}
 
-      {!userLocation && !locationError && (
+      {!userLocation && !locationError && !locationPermissionGranted && (
+        <div className={styles.loading}>
+          <p>📍 Location access required</p>
+          <Button onClick={requestLocationPermission} size="lg">
+            Enable Location
+          </Button>
+        </div>
+      )}
+
+      {!userLocation && !locationError && locationPermissionGranted && (
         <div className={styles.loading}>
           <p>📍 Getting your location...</p>
         </div>
