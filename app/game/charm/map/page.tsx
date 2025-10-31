@@ -65,6 +65,7 @@ export default function MapPage() {
   const [showWaifuList, setShowWaifuList] = useState(false);
   const [capturedIds, setCapturedIds] = useState<Set<string>>(new Set());
   const [locationPermissionGranted, setLocationPermissionGranted] = useState(false);
+  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
   // Fetch spawns
   useEffect(() => {
@@ -108,63 +109,96 @@ export default function MapPage() {
     loadCaptures();
   }, []);
 
-  // Request location permission
-  async function requestLocationPermission() {
+  // Button handler to request location - call getCurrentPosition first for permission prompt
+  const handleStartMap = () => {
+    console.log('=== handleStartMap CLICKED ===');
+    console.log('navigator.geolocation exists:', !!navigator.geolocation);
+    console.log('User agent:', navigator.userAgent);
+    console.log('Protocol:', window.location.protocol);
+
     if (!navigator.geolocation) {
+      console.error('Geolocation NOT supported');
       setLocationError('Geolocation not supported on this device');
       return;
     }
 
+    // Check if we're on secure context
+    if (window.location.protocol !== 'https:' && window.location.hostname !== 'localhost') {
+      setLocationError('Location requires HTTPS. Please use https:// in the URL.');
+      return;
+    }
+
+    console.log('🌍 Calling getCurrentPosition to trigger permission...');
+    setIsLoadingLocation(true);
+
+    // Try with NO options first - sometimes this works better on iOS
     try {
-      // Request location once to trigger permission prompt
       navigator.geolocation.getCurrentPosition(
         (position) => {
+          console.log('✅ First position received:', position.coords);
           setUserLocation({
             lat: position.coords.latitude,
             lng: position.coords.longitude
           });
-          setLocationPermissionGranted(true);
           setLocationError(null);
+          setIsLoadingLocation(false);
+          setLocationPermissionGranted(true);
+
+          // Now start watching for updates
+          console.log('Starting watchPosition for continuous updates...');
+          const watchId = navigator.geolocation.watchPosition(
+            (pos) => {
+              console.log('📍 Position update:', pos.coords);
+              setUserLocation({
+                lat: pos.coords.latitude,
+                lng: pos.coords.longitude
+              });
+            },
+            (err) => {
+              console.error('Watch error:', err);
+            },
+            {
+              enableHighAccuracy: true,
+              maximumAge: 1500,
+              timeout: 8000
+            }
+          );
+
+          // Store watchId so we can clean it up later
+          return () => navigator.geolocation.clearWatch(watchId);
         },
         (error) => {
-          setLocationError(error.message);
+          console.error('❌ GPS error:', error.code, error.message);
+          console.error('Error object:', error);
+
+          let errorMsg = '';
+          if (error.code === 1) {
+            errorMsg = 'Location permission denied. Go to Settings > Safari > Location Services and enable location for this site.';
+          } else if (error.code === 2) {
+            errorMsg = 'Location unavailable. Please check your GPS is enabled.';
+          } else if (error.code === 3) {
+            errorMsg = 'Location request timed out. Please check your connection and try again.';
+          } else {
+            errorMsg = `Location error: ${error.message}`;
+          }
+
+          setLocationError(errorMsg);
+          setIsLoadingLocation(false);
         },
         {
-          enableHighAccuracy: true,
-          timeout: 10000
+          enableHighAccuracy: false, // Try without high accuracy first
+          timeout: 15000, // Longer timeout
+          maximumAge: 0
         }
       );
-    } catch {
-      setLocationError('Failed to request location permission');
-    }
-  }
-
-  // Get user location (only after permission granted)
-  useEffect(() => {
-    if (!locationPermissionGranted || !navigator.geolocation) {
-      return;
+    } catch (err) {
+      console.error('Exception calling getCurrentPosition:', err);
+      setLocationError('Failed to request location: ' + (err instanceof Error ? err.message : 'Unknown error'));
+      setIsLoadingLocation(false);
     }
 
-    const watchId = navigator.geolocation.watchPosition(
-      (position) => {
-        setUserLocation({
-          lat: position.coords.latitude,
-          lng: position.coords.longitude
-        });
-        setLocationError(null);
-      },
-      (error) => {
-        setLocationError(error.message);
-      },
-      {
-        enableHighAccuracy: true,
-        maximumAge: 10000,
-        timeout: 5000
-      }
-    );
-
-    return () => navigator.geolocation.clearWatch(watchId);
-  }, [locationPermissionGranted]);
+    console.log('getCurrentPosition called, waiting for response...');
+  };
 
   // Get device orientation (compass)
   useEffect(() => {
@@ -237,27 +271,33 @@ export default function MapPage() {
         </Button>
       </div>
 
-      {/* Fullscreen Map */}
-      {locationError && (
-        <div className={styles.error}>
-          <p>📍 Location Error</p>
-          <p className={styles.errorText}>{locationError}</p>
-          <p className={styles.hint}>Please enable location permissions</p>
-        </div>
-      )}
-
-      {!userLocation && !locationError && !locationPermissionGranted && (
+      {/* Start Screen - show button before location is granted */}
+      {!locationPermissionGranted && !locationError && (
         <div className={styles.loading}>
-          <p>📍 Location access required</p>
-          <Button onClick={requestLocationPermission} size="lg">
-            Enable Location
+          <p style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>🗺️ Ready to Hunt Waifus?</p>
+          <p className={styles.hint} style={{ marginBottom: '2rem' }}>
+            We need your location to show nearby waifus
+          </p>
+          <Button onClick={handleStartMap} size="lg">
+            Start Map
           </Button>
         </div>
       )}
 
-      {!userLocation && !locationError && locationPermissionGranted && (
+      {/* Loading state after button click */}
+      {isLoadingLocation && !locationError && (
         <div className={styles.loading}>
           <p>📍 Getting your location...</p>
+          <p className={styles.hint}>Please allow location access when prompted</p>
+        </div>
+      )}
+
+      {/* Error state */}
+      {locationError && (
+        <div className={styles.error}>
+          <p>📍 Location Error</p>
+          <p className={styles.errorText}>{locationError}</p>
+          <p className={styles.hint}>Please enable location permissions in your browser settings</p>
         </div>
       )}
 
